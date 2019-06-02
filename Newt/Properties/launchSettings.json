@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Newt": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\ebnf.ebnf"
+    }
+  }
+}

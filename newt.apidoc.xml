@@ -1,0 +1,967 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>newt</name>
+    </assembly>
+    <members>
+        <member name="T:Grimoire.Cfg">
+            <summary>
+            Represents a Context-Free Grammar, or CFG, which is a series of rules.
+            </summary>
+            <remarks>This class implements value semantics</remarks>
+        </member>
+        <member name="P:Grimoire.Cfg.AttributeSets">
+            <summary>
+            Indicates sets of attributes by non-terminal that may further specify or otherwise modify parsing
+            </summary>
+        </member>
+        <member name="P:Grimoire.Cfg.Rules">
+            <summary>
+            The rules that make up the grammar
+            </summary>
+        </member>
+        <member name="P:Grimoire.Cfg.StartSymbol">
+            <summary>
+            Gets or sets the starting non-terminal of the grammar
+            </summary>
+            <remarks>This property employs the "start" grammar attribute.</remarks>
+        </member>
+        <member name="M:Grimoire.Cfg.ToString">
+            <summary>
+            Returns a string representation of the grammar.
+            </summary>
+            <returns>A string containing a series of rules of the form A -> b C</returns>
+            <remarks>This string is not suitable for comparison. It does not contain the grammar attributes.</remarks>
+        </member>
+        <member name="P:Grimoire.Cfg.NonTerminals">
+            <summary>
+            Provides a read-only list of all non-terminals in the grammar.
+            </summary>
+        </member>
+        <member name="P:Grimoire.Cfg.Terminals">
+            <summary>
+            Provides a read-only list of all terminals in the grammar.
+            </summary>
+        </member>
+        <member name="P:Grimoire.Cfg.Symbols">
+            <summary>
+            Provides a read-only list of all symbols in the grammar.
+            </summary>
+        </member>
+        <member name="M:Grimoire.Cfg.GetSymbolId(System.String)">
+            <summary>
+            Retrieves an integer identifier for a symbol suitable for use by parse tables and parsers.
+            </summary>
+            <param name="symbol">The symbol to retrieve the identifier for.</param>
+            <returns>An integer that can be used to refer to the symbol, or less than zero to indicate the symbol was not present in the CFG.</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.FillFollows(System.Collections.Generic.IDictionary{System.String,System.Collections.Generic.ICollection{System.String}},System.Collections.Generic.IDictionary{System.String,System.Collections.Generic.ICollection{System.String}})">
+            <summary>
+            Computes the FOLLOWS sets for the grammar
+            </summary>
+            <param name="firsts">The precomputed firsts sets. These will be computed if this is null.</param>
+            <param name="result">The result to fill. If null, a new dictionary will be created.</param>
+            <returns>The result, filled with FOLLOWS sets grouped by non-terminal</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.IsNillable(System.Object)">
+            <summary>
+            Reports whether the specified non-terminal symbol is nillable
+            </summary>
+            <param name="symbol">The non-terminal to check</param>
+            <returns>True if the symbol is a non-terminal and if it has a rule that takes the form of A -> ε, otherwise false.</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.ToLL1ParseTable(System.Collections.Generic.IDictionary{Grimoire.CfgRule,System.Collections.Generic.ICollection{System.String}})">
+            <summary>
+            Builds a table an LL(1) parser can use to parse input.
+            </summary>
+            <param name="predict">The computed prediction table, or null to compute it.</param>
+            <returns>A dictionary based parse table suitable for use by an LL(1) parser.</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.Equals(Grimoire.Cfg)">
+            <summary>
+            Indicates whether the CFG is exactly equivelant to the specified CFG
+            </summary>
+            <param name="rhs">The CFG to compare</param>
+            <returns>True if the CFGs are equal, otherwise false.</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.Equals(System.Object)">
+            <summary>
+            Indicates whether the CFG is exactly equivelant to the specified CFG
+            </summary>
+            <param name="obj">The CFG to compare</param>
+            <returns>True if the CFGs are equal, otherwise false.</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.GetHashCode">
+            <summary>
+            Gets a hashcode that represents this CFG
+            </summary>
+            <returns>A hashcode that represents this CFG</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.op_Equality(Grimoire.Cfg,Grimoire.Cfg)">
+            <summary>
+            Indicates whether the two CFGs are exactly equivelent
+            </summary>
+            <param name="lhs">The first CFG to compare</param>
+            <param name="rhs">The second CFG to compare</param>
+            <returns>True if the CFGs are equal, otherwise false</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.op_Inequality(Grimoire.Cfg,Grimoire.Cfg)">
+            <summary>
+            Indicates whether the two CFGs are not equal
+            </summary>
+            <param name="lhs">The first CFG to compare</param>
+            <param name="rhs">The second CFG to compare</param>
+            <returns>True if the CFGs are not equal, or false if they are equal</returns>
+        </member>
+        <member name="M:Grimoire.Cfg.Clone">
+            <summary>
+            Performs a deep clone of the CFG
+            </summary>
+            <returns>A new CFG equal to this CFG</returns>
+        </member>
+        <member name="T:Grimoire.CfgRule">
+            <summary>
+            Represents a rule in a context-free grammar
+            </summary>
+            <remarks>This class has value semantics</remarks>
+        </member>
+        <member name="M:Grimoire.CfgRule.#ctor">
+            <summary>
+            Constructs an empty rule
+            </summary>
+        </member>
+        <member name="M:Grimoire.CfgRule.#ctor(System.String,System.String[])">
+            <summary>
+            Constructs the rule
+            </summary>
+            <param name="left">The left hand side of the rule.</param>
+            <param name="right">The right hand symbols for the rule</param>
+        </member>
+        <member name="M:Grimoire.CfgRule.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Constructs the rule
+            </summary>
+            <param name="left">The left hand side of the rule.</param>
+            <param name="right">The right hand symbols for the rule</param>
+        </member>
+        <member name="P:Grimoire.CfgRule.Left">
+            <summary>
+            Indicates the left hand side of the rule
+            </summary>
+            <remarks>Any symbol appearing on the left hand side of any rule is considered non-terminal.</remarks>
+        </member>
+        <member name="P:Grimoire.CfgRule.Right">
+            <summary>
+            Indicates the right hand side of the rule
+            </summary>
+        </member>
+        <member name="P:Grimoire.CfgRule.IsNil">
+            <summary>
+            Indicates whether the rule is of the form A -> ε
+            </summary>
+        </member>
+        <member name="M:Grimoire.CfgRule.ToString">
+            <summary>
+            Provides a string representation of the rule.
+            </summary>
+            <returns>A string of the form A -> b C representing the rule.</returns>
+        </member>
+        <member name="P:Grimoire.CfgRule.IsDirectlyLeftRecursive">
+            <summary>
+            Indicates if the rule takes the form of A -> A ...
+            </summary>
+        </member>
+        <member name="M:Grimoire.CfgRule.Equals(Grimoire.CfgRule)">
+            <summary>
+            Indicates whether two rules are exactly equivelant.
+            </summary>
+            <param name="rhs">The rule to compare this rule to.</param>
+            <returns>True if the rules are equal, otherwise false.</returns>
+        </member>
+        <member name="M:Grimoire.CfgRule.Equals(System.Object)">
+            <summary>
+            Indicates whether two rules are exactly equivelant.
+            </summary>
+            <param name="obj">The rule to compare this rule to.</param>
+            <returns>True if the rules are equal, otherwise false.</returns>
+        </member>
+        <member name="M:Grimoire.CfgRule.GetHashCode">
+            <summary>
+            Gets a hashcode for the rule
+            </summary>
+            <returns>A hashcode representing this rule</returns>
+        </member>
+        <member name="M:Grimoire.CfgRule.op_Equality(Grimoire.CfgRule,Grimoire.CfgRule)">
+            <summary>
+            Indicates if the rules are equal
+            </summary>
+            <param name="lhs">A rule to compare</param>
+            <param name="rhs">A rule to compare</param>
+            <returns>True if the rules are equal, false if they are not equal</returns>
+        </member>
+        <member name="M:Grimoire.CfgRule.op_Inequality(Grimoire.CfgRule,Grimoire.CfgRule)">
+            <summary>
+            Indicates if the rules are not equal
+            </summary>
+            <param name="lhs">A rule to compare</param>
+            <param name="rhs">A rule to compare</param>
+            <returns>True if the rules are not equal, false if they are equal</returns>
+        </member>
+        <member name="M:Grimoire.CfgRule.Clone">
+            <summary>
+            Performs a deep clone of the rule
+            </summary>
+            <returns>A copy of the rule</returns>
+        </member>
+        <member name="T:Grimoire.CollectionUtility.ListDictionary`2">
+            <summary>
+            Represents an ordered, unindexed dictionary over a list.
+            </summary>
+        </member>
+        <member name="M:Grimoire.CollectionUtility.IsNullOrEmpty(System.Collections.IEnumerable)">
+            <summary>
+            Tests whether the enumeration is null or empty.
+            </summary>
+            <param name="collection">The enumeration to test</param>
+            <returns>True if the enumeration is null, or if enumerating ends before the first element. Otherwise, this method returns true.</returns>
+            <remarks>For actual collections, testing the "Count" property should be slightly faster.</remarks>
+        </member>
+        <member name="M:Grimoire.CollectionUtility.TryAddUnique``1(System.Collections.Generic.ICollection{``0},``0)">
+            <summary>
+            Attempts to add a unique item to a collection.
+            </summary>
+            <typeparam name="T">The element type of the collection and type of the item to add</typeparam>
+            <param name="collection">The collection to add the item to</param>
+            <param name="item">The item to add to the collection</param>
+            <returns>True if the item was added, false if it already exists.</returns>
+        </member>
+        <member name="M:Grimoire.CollectionUtility.ToArray``1(System.Collections.Generic.ICollection{``0})">
+            <summary>
+            Creates an array of element type T from the items in the specified source collection, also of type T
+            </summary>
+            <typeparam name="T">The element type of the array and the collection</typeparam>
+            <param name="source">The source collection</param>
+            <returns>A new array with the values copied from the source.</returns>
+        </member>
+        <member name="M:Grimoire.CollectionUtility.ToArray``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Creates an array of element type T from the items in the specified source enumeration, also of type T
+            </summary>
+            <typeparam name="T">The element type of the array and the enumeration</typeparam>
+            <param name="source">The source enumeration</param>
+            <returns>A new array with the values copied from the source.</returns>
+        </member>
+        <member name="M:Grimoire.CollectionUtility.CopyTo``1(System.Collections.Generic.IEnumerable{``0},``0[],System.Int32)">
+            <summary>
+            Copies an enumeration of type T to the specified array of type T, starting at the specified start index.
+            </summary>
+            <typeparam name="T">The element type of the array and enumeration</typeparam>
+            <param name="source">The enumeration to copy from</param>
+            <param name="destination">The array to copy to</param>
+            <param name="destinationStartIndex">The start index at which copying begins</param>
+            <returns>The count of items copied. This will be the same as the number of items in the enumeration.</returns>
+        </member>
+        <member name="M:Grimoire.CollectionUtility.CopyTo(System.Collections.IEnumerable,System.Array,System.Int32)">
+            <summary>
+            Copies an enumeration to the specified array, starting at the specified start index.
+            </summary>
+            <param name="source">The enumeration to copy from</param>
+            <param name="destination">The array to copy to</param>
+            <param name="destinationStartIndex">The start index at which copying begins</param>
+            <returns>The count of items copied. This will be the same as the number of items in the enumeration.</returns>
+        </member>
+        <member name="T:Grimoire.EbnfDocument">
+            <summary>
+            Represents an EBNF grammar document
+            </summary>
+            <remarks>This class implements value semantics.</remarks>
+        </member>
+        <member name="P:Grimoire.EbnfDocument.Productions">
+            <summary>
+            Indicates the productions in the EBNF grammar document
+            </summary>
+        </member>
+        <member name="P:Grimoire.EbnfDocument.StartProduction">
+            <summary>
+            Gets or sets the starting production of the grammar document
+            </summary>
+            <remarks>This property employs the "start" grammar attribute.</remarks>
+        </member>
+        <member name="T:Grimoire.EbnfExpression">
+            <summary>
+            Represents the base class for all EBNF expressions
+            </summary>
+            <remarks>Make sure derived classes implement <see cref="T:System.ICloneable"/> and value semantics</remarks>
+        </member>
+        <member name="P:Grimoire.EbnfExpression.IsTerminal">
+            <summary>
+            Indicates whether or not the expression represents a terminal
+            </summary>
+        </member>
+        <member name="T:Grimoire.EbnfProduction">
+            <summary>
+            Represents a grammar production
+            </summary>
+            <remarks>This class implements value semantics</remarks>
+        </member>
+        <member name="P:Grimoire.EbnfProduction.Attributes">
+            <summary>
+            Indicates the grammar attributes for the production
+            </summary>
+        </member>
+        <member name="P:Grimoire.EbnfProduction.Expression">
+            <summary>
+            Indicates the root expression for the production
+            </summary>
+        </member>
+        <member name="P:Grimoire.EbnfRefExpression.Symbol">
+            <summary>
+            Indicates the referenced symbol
+            </summary>
+        </member>
+        <member name="T:Grimoire.FA">
+            <summary>
+            Represents a state in a finite state machine.
+            </summary>	
+            <remarks>This class is essentially a regular expression engine and code generator.</remarks>
+        </member>
+        <member name="P:Grimoire.FA.AcceptingSymbol">
+            <summary>
+            The Accepting Symbol. If this null, the state does not accept.
+            </summary>
+            <remarks>For code to be generated from this, it must be an intrinsic type.</remarks>
+        </member>
+        <member name="P:Grimoire.FA.Tag">
+            <summary>
+            An arbitrary value associated with this state
+            </summary>
+            <remarks>No code is generated for this.</remarks>
+        </member>
+        <member name="P:Grimoire.FA.Transitions">
+            <summary>
+            The input transitions.
+            </summary>
+        </member>
+        <member name="P:Grimoire.FA.EpsilonTransitions">
+            <summary>
+            The transitions on epsilon.
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.#ctor">
+            <summary>
+            Constructs a new instance of an FA state
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.#ctor(System.Object,System.Object)">
+            <summary>
+            Constructs a new instance of an FA state with the specified parameters
+            </summary>
+            <param name="accepting">The symbol that this state returns, or null if the state is not accepting.</param>
+            <param name="tag">The arbitrary tag associated with this symbol, if any.</param>
+            <remarks>For code generation to function, <paramref name="accepting"/> should be an intrinsic type.</remarks>
+        </member>
+        <member name="M:Grimoire.FA.Clone">
+            <summary>
+            Clones a state 
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.Clone(System.Collections.Generic.IEnumerable{Grimoire.FA})">
+            <summary>
+            Clones a state given its closure
+            </summary>
+            <param name="closure">The closure of the state to clone</param>
+            <returns>A new state that is a deep clone of the passed in state.</returns>
+        </member>
+        <member name="M:Grimoire.FA.ToString">
+            <summary>
+            Returns the regular expression that represents the FA
+            </summary>
+            <returns>A regular expression</returns>
+            <remarks>DOES NOT WORK YET. Mostly for debugging. This algorithm is naive and only supports |, *, (), and [] which can make expressions very large, and unreasonable for more complicated expressions with hundreds or sometimes even dozens of states.</remarks>
+        </member>
+        <member name="P:Grimoire.FA.Closure">
+            <summary>
+            Lazy enumeration of the closure
+            </summary>
+            <remarks>Usually, <see cref="M:Grimoire.FA.FillClosure(System.Collections.Generic.IList{Grimoire.FA})"/> will be faster. The exception is when a large closure only needs to be partially enumerated. This is wrapped with a <see cref="T:System.Collections.Generic.IList`1"/>for convenience but the list doesn't have the performance properties of a standard list.</remarks>
+        </member>
+        <member name="M:Grimoire.FA.FillClosure(System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with a list of all states reachable from this state, including itself.
+            </summary>
+            <param name="result">The list to fill. If null, the list will be created.</param>
+            <returns>The list specified in <paramref name="result"/> or the new list if <paramref name="result"/> was null.</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillEpsilonClosure(System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with a list of all states reachable from this state on an epsilon transition, including itself.
+            </summary>
+            <param name="result">The list to fill. If null, the list will be created.</param>
+            <returns>The list specified in <paramref name="result"/> or the new list if <paramref name="result"/> was null.</returns>
+        </member>
+        <member name="P:Grimoire.FA.EpsilonClosure">
+            <summary>
+            Lazy enumerates the epsilon closure.
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.FillEpsilonClosure(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with all states reachable from the specified states on an epsilon transition, including themselves.
+            </summary>
+            <param name="result">The list to fill. If null, the list will be created.</param>
+            <returns>The list specified in <paramref name="result"/> or the new list if <paramref name="result"/> was null.</returns>
+        </member>
+        <member name="P:Grimoire.FA.IsNeutral">
+            <summary>
+            Returns true if the state has exactly one epsilon transition and no input transitions.
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.FillNeutrals(System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with all neutral states reachable from the specified state, if necessary including itself.
+            </summary>
+            <param name="result">The list to fill. If null, the list will be created.</param>
+            <returns>The list specified in <paramref name="result"/> or the new list if <paramref name="result"/> was null.</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillNeutrals(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with all neutral states from the specified closure.
+            </summary>
+            <param name="closure">The closure to use.</param>
+            <param name="result">The list to fill. If null, the list will be created.</param>
+            <returns>The list specified in <paramref name="result"/> or the new list if <paramref name="result"/> was null.</returns>
+        </member>
+        <member name="P:Grimoire.FA.Neutrals">
+            <summary>
+            Lazy enumerates the neutral states
+            </summary>
+        </member>
+        <member name="P:Grimoire.FA.IsFinal">
+            <summary>
+            Returns true if the state has no transitions.
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.FillFinals(System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with all final states reachable from this state.
+            </summary>
+            <param name="result">The list to fill. If null, a list is created.</param>
+            <returns>The list specified in <paramref name="result"/> or the new list that was filled.</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillFinals(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with all final states in the specified closure.
+            </summary>
+            <param name="closure">The closure to use. Alternately, a collection of states to filter for finals.</param>
+            <param name="result">The list to fill. If null, a list is created.</param>
+            <returns>The list specified in <paramref name="result"/> or the new list that was filled.</returns>
+        </member>
+        <member name="P:Grimoire.FA.Finals">
+            <summary>
+            Lazy enumerates the final states.
+            </summary>
+        </member>
+        <member name="P:Grimoire.FA.IsAccepting">
+            <summary>
+            Returns true if the state is an accepting state
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.FillAccepting(System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with all accepting states reachable from this state.
+            </summary>
+            <param name="result">The list to fill</param>
+            <returns>Either <paramref name="result"/> or the new list filled with the accepting states</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillAccepting(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with all accepting states reachable from the specified closure.
+            </summary>
+            <param name="closure">The closure of all states, or alternatively, a list of states to filter for accepting states.</param>
+            <param name="result">The list to fill</param>
+            <returns>Either <paramref name="result"/> or the new list filled with the accepting states</returns>
+        </member>
+        <member name="P:Grimoire.FA.Accepting">
+            <summary>
+            Lazy enumerates the accepting states
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.IsAnyAccepting(System.Collections.Generic.IEnumerable{Grimoire.FA})">
+            <summary>
+            Reports if any of the specified states is an accepting state.
+            </summary>
+            <param name="states">The states to check</param>
+            <returns>True if one or more of of the states in <paramref name="states"/> is an accepting state</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillAcceptingSymbols(System.Collections.Generic.IList{System.Object})">
+            <summary>
+            Fills a list with all accepting symbols reachable from this state.
+            </summary>
+            <param name="result">The list to fill, or null, to create a new list.</param>
+            <returns>Either <paramref name="result"/> or the new list, filled with the accepting symbols</returns>
+        </member>
+        <member name="P:Grimoire.FA.AcceptingSymbols">
+            <summary>
+            Lazy enumerates the accepting symbols
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.FillAcceptingSymbols(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Collections.Generic.IList{System.Object})">
+            <summary>
+            Fills a list with all accepting symbols reachable from the specified closure.
+            </summary>
+            <param name="closure">The closure of all states, or alternatively, a collection of states from which to retrieve accepting symbols.</param>
+            <param name="result">The list to fill</param>
+            <returns>Either <paramref name="result"/> or the new list with the reachable accepting symbols</returns>
+        </member>
+        <member name="P:Grimoire.FA.IsDfa">
+            <summary>
+            Returns true if the machine contains no epsilon transitions
+            </summary>
+        </member>
+        <member name="P:Grimoire.FA.IsLoop">
+            <summary>
+            Returns true if this state is the start point of one or more loops
+            </summary>
+        </member>
+        <member name="P:Grimoire.FA.IsLiteral">
+            <summary>
+            Returns true if the machine matches exactly one string.
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.TryRead(Grimoire.ParseContext)">
+            <summary>
+            Tries to read the next match from the specied <see cref="T:Grimoire.ParseContext"/>, with capture
+            </summary>
+            <param name="pc">The parse context</param>
+            <returns>True if the read was successful, otherwise false</returns>
+            <remarks>The capture buffer will contain all characters consumed. After reading, the current character will either be the character immediately following the match, or the error character.</remarks>
+        </member>
+        <member name="M:Grimoire.FA.TrySkip(Grimoire.ParseContext)">
+            <summary>
+            Tries to skip the next match from the specied <see cref="T:Grimoire.ParseContext"/> with no capture
+            </summary>
+            <param name="pc">The parse context</param>
+            <returns>True if the skip was successful, otherwise false</returns>
+            <remarks>There is no mechanism for error recovery when using this method.</remarks>
+        </member>
+        <member name="M:Grimoire.FA.Lex(System.ValueTuple{System.Object,System.ValueTuple{System.Collections.Generic.KeyValuePair{System.Char,System.Char}[],System.Int32}[]}[],Grimoire.ParseContext,System.Text.StringBuilder)">
+            <summary>
+            Lexes the the next token from the specifed <see cref="T:Grimoire.ParseContext"/>
+            </summary>
+            <param name="dfaTable">The DFA table to use for lexing</param>
+            <param name="pc">The parse context to use</param>
+            <param name="sb">The <see cref="T:System.Text.StringBuilder"/> that holds the result. If null, a new <see cref="T:System.Text.StringBuilder"/> will be created. Otherwise the passed in <see cref="T:System.Text.StringBuilder"/> will be cleared.</param>
+            <returns>A <see cref="T:System.Collections.Generic.KeyValuePair" /> that contains the accepting symbol(s) and the captured string.</returns>
+            <remarks>The capture buffer is not affected.</remarks>
+        </member>
+        <member name="M:Grimoire.FA.Lex``1(System.ValueTuple{``0,System.ValueTuple{System.Collections.Generic.KeyValuePair{System.Char,System.Char}[],System.Int32}[]}[],Grimoire.ParseContext,System.Text.StringBuilder)">
+            <summary>
+            Lexes the the next token from the specifed <see cref="T:Grimoire.ParseContext"/>
+            </summary>
+            <typeparam name="TAccept">The type of the accepting symbols</typeparam>
+            <param name="dfaTable">The DFA table to use for lexing</param>
+            <param name="pc">The parse context to use</param>
+            <param name="sb">The <see cref="T:System.Text.StringBuilder"/> that holds the result. If null, a new <see cref="T:System.Text.StringBuilder"/> will be created. Otherwise the passed in <see cref="T:System.Text.StringBuilder"/> will be cleared.</param>
+            <returns>A <see cref="T:System.Collections.Generic.KeyValuePair" /> that contains the accepting symbol(s) and the captured string.</returns>
+            <remarks>The capture buffer is not affected.</remarks>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Grimoire.FA.Lex(Grimoire.ParseContext,System.Text.StringBuilder)" -->
+        <member name="M:Grimoire.FA.TryLex(Grimoire.ParseContext,System.Collections.Generic.KeyValuePair{System.Object,System.String}@)">
+            <summary>
+            Attempts to lex the next token from the specified <see cref="T:Grimoire.ParseContext"/>, with capture
+            </summary>
+            <param name="pc">The parse context</param>
+            <param name="result">The <see cref="!:System.Collections.KeyValuePair"/> that contains the token</param>
+            <returns>True if successful, otherwise false. The capture contains the consumed input.</returns>
+            <remarks>On success, the cursor is advanced past the token. On error, the current character is over the error.</remarks>
+        </member>
+        <member name="M:Grimoire.FA.Move(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Char)">
+            <summary>
+            Moves from the current <paramref name="states"/> to the next set of states based on <paramref name="input"/>
+            </summary>
+            <param name="states">The states to move from</param>
+            <param name="input">The input to move on</param>
+            <returns>The states moved to</returns>
+        </member>
+        <member name="M:Grimoire.FA.WriteCSharpLexMethodTo(System.IO.TextWriter,System.String,System.String)">
+            <summary>
+            Writes a Lex method in C# 
+            </summary>
+            <param name="writer">The <see cref="T:System.IO.TextWriter"/> with which to emit the code</param>
+            <param name="name">The name of FSM. This name will be appended to the method name.</param>
+            <param name="access">The access level of the generated function. Can be "public", "private", "internal" or "" or null</param>
+        </member>
+        <member name="M:Grimoire.FA.WriteCSharpLexMethodTo(System.Collections.Generic.IEnumerable{Grimoire.FA},System.IO.TextWriter,System.String,System.String)">
+            <summary>
+            Writes a Lex method in C#
+            </summary>
+            <param name="closure">The closure of all states</param>
+            <param name="writer">The <see cref="T:System.IO.TextWriter"/> with which to emit the code</param>
+            <param name="name">The name of FSM. This name will be appended to the method name.</param>
+            <param name="access">The access level of the generated function. Can be "public", "private", "internal" or "" or null</param>
+        </member>
+        <member name="M:Grimoire.FA.WriteCSharpTryLexMethodTo(System.IO.TextWriter,System.String,System.String)">
+            <summary>
+            Writes a TryLex method in C#
+            </summary>
+            <param name="writer">The <see cref="T:System.IO.TextWriter"/> with which to emit the code</param>
+            <param name="name">The name of FSM. This name will be appended to the method name.</param>
+            <param name="access">The access level of the generated function. Can be "public", "private", "internal" or "" or null</param>
+        </member>
+        <member name="M:Grimoire.FA.WriteTryLexMethodTo(System.Collections.Generic.IEnumerable{Grimoire.FA},System.IO.TextWriter,System.String,System.String)">
+            <summary>
+            Writes a TryLex method in C#
+            </summary>
+            <param name="closure">The closure of all states</param>
+            <param name="writer">The <see cref="T:System.IO.TextWriter"/> with which to emit the code</param>
+            <param name="name">The name of FSM. This name will be appended to the method name.</param>
+            <param name="access">The access level of the generated function. Can be "public", "private", "internal" or "" or null</param>
+        </member>
+        <member name="M:Grimoire.FA.FillInputTransitionRangesGroupedByState(System.Collections.Generic.IDictionary{Grimoire.FA,System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{System.Char,System.Char}}})">
+            <summary>
+            Returns a <see cref="!:IDictionary&lt;FA,IList&lt;KeyValuePair&lt;Char,Char&gt;&gt;&gt;"/>, keyed by state, that contains all of the outgoing local input transitions, expressed as a series of ranges
+            </summary>
+            <param name="result">The <see cref="!:IDictionary&lt;FA,IList&lt;KeyValuePair&lt;Char,Char&gt;&gt;&gt;"/> to fill, or null to create one.</param>
+            <returns>A <see cref="!:IDictionary&lt;FA,IList&lt;KeyValuePair&lt;Char,Char&gt;&gt;&gt;"/> containing the result of the query</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillReferences(System.Collections.Generic.IEnumerable{Grimoire.FA},Grimoire.FA,System.Collections.Generic.IList{Grimoire.FA})">
+            <summary>
+            Fills a list with the references to <paramref name="target"/> from the state machine indicated by <paramref name="closure"/>
+            </summary>
+            <param name="closure">The set of all states</param>
+            <param name="target">The state to find the references for</param>
+            <param name="result">A list to fill with the states that refer to <paramref name="target"/>, or null for a new list to be created</param>
+            <returns>The new list, or the passed in list, filled with states that refer to <paramref name="target"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.IsDuplicate(Grimoire.FA)">
+            <summary>
+            Indicates if two states are duplicates of each other
+            </summary>
+            <param name="rhs">The <see cref="T:Grimoire.FA"/> to compare</param>
+            <returns>True if the two states are duplicates, otherwise false.</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillDuplicatesGroupedByState(System.Collections.Generic.IDictionary{Grimoire.FA,System.Collections.Generic.ICollection{Grimoire.FA}})">
+            <summary>
+            Fills a <see cref="!:IDictionary&lt;FA, ICollection&lt;FA&gt;&gt;"/> with all duplicates in this machine, grouped by each duplicate state
+            </summary>
+            <param name="result">The <see cref="!:IDictionary&lt;FA, ICollection&lt;FA&gt;&gt;"/> to fill, or null to create a new one</param>
+            <returns>The <see cref="!:IDictionary&lt;FA, ICollection&lt;FA&gt;&gt;"/> containing the duplicates</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillDuplicatesGroupedByState(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Collections.Generic.IDictionary{Grimoire.FA,System.Collections.Generic.ICollection{Grimoire.FA}})">
+            <summary>
+            Fills a <see cref="!:IDictionary&lt;FA, ICollection&lt;FA&gt;&gt;"/> with all duplicates in the closure, grouped by each duplicate state
+            </summary>
+            <param name="closure">The closure of all states</param>
+            <param name="result">The <see cref="!:IDictionary&lt;FA, ICollection&lt;FA&gt;&gt;"/> to fill, or null to create a new one</param>
+            <returns>The <see cref="!:IDictionary&lt;FA, ICollection&lt;FA&gt;&gt;"/> containing the duplicates</returns>
+        </member>
+        <member name="M:Grimoire.FA.FillLoops(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Collections.Generic.IList{System.Collections.Generic.KeyValuePair{Grimoire.FA,Grimoire.FA}})">
+            <summary>
+            Finds all of the loop points in the specified machine
+            </summary>
+            <param name="closure">The set of all states that represent the machine</param>
+            <param name="result">Null, or a list to fill with <see cref="T:System.Collections.Generic.KeyValuePair`2"/> entries</param>
+            <returns>The list of <see cref="T:System.Collections.Generic.KeyValuePair`2"/> entries where Key is the start of the loop, and Value is the end of the loop. Keys may be duplicated.</returns>
+        </member>
+        <member name="M:Grimoire.FA.TrimDuplicates">
+            <summary>
+            Removes duplicate states from this machine
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.TrimDuplicates(System.Collections.Generic.IEnumerable{Grimoire.FA})">
+            <summary>
+            Removes duplicate states from this machine
+            </summary>
+            <param name="closure">The set of all states</param>
+        </member>
+        <member name="M:Grimoire.FA.Literal(System.Object,System.Char[])">
+            <summary>
+            Creates a new generalized NFA (Thompson construction) matching the specified literal
+            </summary>
+            <param name="accepting">The symbol reported on accept</param>
+            <param name="string">The string to match</param>
+            <returns>A new machine that matches the <paramref name="string"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.Literal(System.Collections.Generic.IEnumerable{System.Char},System.Object)">
+            <summary>
+            Creates a new generalized NFA (Thompson construction) matching the specified literal
+            </summary>
+            <param name="string">The string to match</param>
+            <param name="accepting">The symbol reported on accept</param>
+            <returns>A new machine that matches the <paramref name="string"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.Set(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.Char,System.Char}},System.Object)">
+            <summary>
+            Creates a new generalized NFA (Thompson construction) matching the specified set
+            </summary>
+            <param name="charRanges">The character ranges to match</param>
+            <param name="accepting">The symbol reported on accept</param>
+            <returns>A new machine that matches the <paramref name="charRanges"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.Set(System.Collections.Generic.IEnumerable{System.Char},System.Object)">
+            <summary>
+            Creates a new generalized NFA (Thompson construction) matching the specified set
+            </summary>
+            <param name="inputs">The input characters to match</param>
+            <param name="accepting">The symbol reported on accept</param>
+            <returns>A new machine that matches the <paramref name="inputs"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.Or(System.Object,Grimoire.FA[])">
+            <summary>
+            Creates a new generalized NFA (Thompson construction) matching the specified union
+            </summary>
+            <param name="accepting">The symbol reported on accept</param>
+            <param name="exprs">The expressions to match</param>
+            <returns>A new machine that matches the <paramref name="exprs"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.Or(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Object)">
+            <summary>
+            Creates a new generalized NFA (Thompson construction) matching the specified union
+            </summary>
+            <param name="exprs">The expressions to match</param>
+            <param name="accepting">The symbol reported on accept</param>
+            <returns>A new machine that matches the <paramref name="exprs"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.Concat(System.Object,Grimoire.FA[])">
+            <summary>
+            Creates a new generalized NFA (Thompson construction) matching the specified sequence
+            </summary>
+            <param name="accepting">The symbol reported on accept</param>
+            <param name="exprs">The expressions to match</param>
+            <returns>A new machine that matches the <paramref name="exprs"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.Concat(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Object)">
+            <summary>
+            Creates a new generalized NFA (Thompson construction) matching the specified sequence
+            </summary>
+            <param name="exprs">The expressions to match</param>
+            <param name="accepting">The symbol reported on accept</param>
+            <returns>A new machine that matches the <paramref name="exprs"/></returns>
+        </member>
+        <member name="M:Grimoire.FA.Optional(Grimoire.FA,System.Object)">
+            <summary>
+            Makes the specified machine optional
+            </summary>
+            <param name="fa">The machine</param>
+            <param name="accepting">The symbol to report on accept</param>
+            <returns>The modified machine</returns>
+        </member>
+        <member name="M:Grimoire.FA.Repeat(Grimoire.FA,System.Int32,System.Int32,System.Object)">
+            <summary>
+            Makes the specified machine repeat one or more times
+            </summary>
+            <param name="fa">The machine</param>
+            <param name="accepting">The symbol to report on accept</param>
+            <returns>The modified machine</returns>
+        </member>
+        <member name="M:Grimoire.FA.Kleene(Grimoire.FA,System.Object)">
+            <summary>
+            Makes the specified machine repeat zero or more times
+            </summary>
+            <param name="fa">The machine</param>
+            <param name="accepting">The symbol to report on accept</param>
+            <returns>The modified machine</returns>
+        </member>
+        <member name="M:Grimoire.FA.Lexer(System.Collections.Generic.IEnumerable{Grimoire.FA},System.Boolean)">
+            <summary>
+            Creates a Lexer from the specified expressions
+            </summary>
+            <param name="exprs">The expressions to compose the lexer of. Each expression should produce a token</param>
+            <param name="createDefaultAcceptConstants">True if the default FA instances that are used for accepting states (when unspecified) should be replaced instead with integer constants. States with explicitly set accepting symbols shouldn't be affected by this unless they use FA states as accepting symbols.</param>
+            <returns>An FA that will lex the specified expressions</returns>
+        </member>
+        <member name="M:Grimoire.FA.Lexer(Grimoire.FA[])">
+            <summary>
+            Creates a Lexer from the specified expressions
+            </summary>
+            <param name="exprs">The expressions to compose the lexer of. Each expression should produce a token</param>
+            <returns>An FA that will lex the specified expressions</returns>
+        </member>
+        <member name="T:Grimoire.FA.DotGraphOptions">
+            <summary>
+            The options used for rendering dot graphs
+            </summary>
+            <remarks>Currently, this is little more than a placeholder for future options like coloring of states</remarks>
+        </member>
+        <member name="F:Grimoire.FA.DotGraphOptions.Dpi">
+            <summary>
+            The resolution, in dots-per-inch to render at
+            </summary>
+        </member>
+        <member name="F:Grimoire.FA.DotGraphOptions.StatePrefix">
+            <summary>
+            The prefix used for state labels
+            </summary>
+        </member>
+        <member name="P:Grimoire.FA.DotGraphOptions.DebugString">
+            <summary>
+            If non-null, specifies a debug render using the specified input string.
+            </summary>
+            <remarks>The debug render is useful for tracking the transitions in a state machine</remarks>
+        </member>
+        <member name="F:Grimoire.FA.DotGraphOptions.DebugSourceNfa">
+            <summary>
+            If non-null, specifies the source NFA from which this DFA was derived - used for debug view
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.TrimNeutrals">
+            <summary>
+            Trims the neutral states from this machine
+            </summary>
+        </member>
+        <member name="M:Grimoire.FA.TrimNeutrals(System.Collections.Generic.IEnumerable{Grimoire.FA})">
+            <summary>
+            Trims the neutral states from the specified closure
+            </summary>
+            <param name="closure">The set of all states</param>
+        </member>
+        <member name="M:Grimoire.FA.ToDfa">
+            <summary>
+            Creates a new machine that is the deterministic equivelent of this machine
+            </summary>
+            <returns>A DFA</returns>
+        </member>
+        <member name="M:Grimoire.FA.ToDfa(System.Collections.Generic.IEnumerable{Grimoire.FA})">
+            <summary>
+            Creates a new machine that is the deterministic equivelent of this machine
+            </summary>
+            <returns>A DFA</returns>
+        </member>
+        <member name="M:Grimoire.FA.ToDfaTable">
+            <summary>
+            Creates a table representing the state transitions for a DFA of this machine
+            </summary>
+            <returns>A complex tuple representing the DFA table</returns>
+        </member>
+        <member name="M:Grimoire.FA.ToDfaTable``1">
+            <summary>
+            Creates a table representing the state transitions for a DFA of this machine
+            </summary>
+            <typeparam name="TAccept">The accepting symbol type</typeparam>
+            <returns>A complex tuple representing the DFA table</returns>
+        </member>
+        <member name="M:Grimoire.FA.ToDfaTable(System.Collections.Generic.IEnumerable{Grimoire.FA})">
+            <summary>
+            Creates a table representing the state transitions for a DFA of this machine
+            </summary>
+            <param name="closure">The set of all states</param>
+            <returns>A complex tuple representing the DFA table</returns>
+        </member>
+        <member name="M:Grimoire.FA.ToDfaTable``1(System.Collections.Generic.IEnumerable{Grimoire.FA})">
+            <summary>
+            Creates a table representing the state transitions for a DFA of this machine
+            </summary>
+            <typeparam name="TAccept">The accepting symbol type</typeparam>
+            <param name="closure">The set of all states</param>
+            <returns>A complex tuple representing the DFA table</returns>
+        </member>
+        <member name="M:Grimoire.FA.WriteDotTo(System.IO.TextWriter,Grimoire.FA.DotGraphOptions)">
+            <summary>
+            Writes a Graphviz dot specification to the specified <see cref="T:System.IO.TextWriter"/>
+            </summary>
+            <param name="writer">The writer</param>
+            <param name="options">A <see cref="T:Grimoire.FA.DotGraphOptions"/> instance with any options, or null to use the defaults</param>
+        </member>
+        <member name="M:Grimoire.FA.WriteDotTo(System.Collections.Generic.IEnumerable{Grimoire.FA},System.IO.TextWriter,Grimoire.FA.DotGraphOptions)">
+            <summary>
+            Writes a Graphviz dot specification of the specified closure to the specified <see cref="T:System.IO.TextWriter"/>
+            </summary>
+            <param name="closure">The closure of all states</param>
+            <param name="writer">The writer</param>
+            <param name="options">A <see cref="T:Grimoire.FA.DotGraphOptions"/> instance with any options, or null to use the defaults</param>
+        </member>
+        <member name="M:Grimoire.FA.RenderToFile(System.String,Grimoire.FA.DotGraphOptions)">
+            <summary>
+            Renders Graphviz output for this machine to the specified file
+            </summary>
+            <param name="filename">The output filename. The format to render is indicated by the file extension.</param>
+            <param name="options">A <see cref="T:Grimoire.FA.DotGraphOptions"/> instance with any options, or null to use the defaults</param>
+        </member>
+        <member name="M:Grimoire.FA.RenderToStream(System.String,System.Boolean,Grimoire.FA.DotGraphOptions)">
+            <summary>
+            Renders Graphviz output for this machine to a stream
+            </summary>
+            <param name="format">The output format. The format to render can be any supported dot output format. See dot command line documation for details.</param>
+            <param name="options">A <see cref="T:Grimoire.FA.DotGraphOptions"/> instance with any options, or null to use the defaults</param>
+            <returns>A stream containing the output. The caller is expected to close the stream when finished.</returns>
+        </member>
+        <member name="M:Grimoire.FA.Parse(System.Collections.Generic.IEnumerable{System.Char},System.Object)">
+            <summary>
+            Parses a regular expresion from the specified string
+            </summary>
+            <param name="string">The string</param>
+            <param name="accepting">The symbol reported when accepting the specified expression</param>
+            <returns>A new machine that matches the regular expression</returns>
+        </member>
+        <member name="M:Grimoire.FA.Parse(System.IO.TextReader,System.Object)">
+            <summary>
+            Parses a regular expresion from the specified <see cref="T:System.IO.TextReader"/>
+            </summary>
+            <param name="reader">The text reader</param>
+            <param name="accepting">The symbol reported when accepting the specified expression</param>
+            <returns>A new machine that matches the regular expression</returns>
+        </member>
+        <member name="M:Grimoire.FA.Parse(Grimoire.ParseContext,System.Object)">
+            <summary>
+            Parses a regular expresion from the specified <see cref="T:Grimoire.ParseContext"/>
+            </summary>
+            <param name="pc">The parse context</param>
+            <param name="accepting">The symbol reported when accepting the specified expression</param>
+            <returns>A new machine that matches the regular expression</returns>
+        </member>
+        <member name="T:Grimoire.ExpectingException">
+            <summary>
+            An exception encountered during parsing where the stream contains one thing, but another is expected
+            </summary>
+        </member>
+        <member name="M:Grimoire.ExpectingException.#ctor(System.String)">
+            <summary>
+            Initialize the exception with the specified message.
+            </summary>
+            <param name="message">The message</param>
+        </member>
+        <member name="P:Grimoire.ExpectingException.Expecting">
+            <summary>
+            The list of expected strings.
+            </summary>
+        </member>
+        <member name="P:Grimoire.ExpectingException.Position">
+            <summary>
+            The position when the error was realized.
+            </summary>
+        </member>
+        <member name="P:Grimoire.ExpectingException.Line">
+            <summary>
+            The line of the error
+            </summary>
+        </member>
+        <member name="P:Grimoire.ExpectingException.Column">
+            <summary>
+            The column of the error
+            </summary>
+        </member>
+        <member name="P:Grimoire.ParseContext.Line">
+            <summary>
+            Reports the line the parser is on
+            </summary>
+            <remarks>The line starts at one.</remarks>
+        </member>
+        <member name="P:Grimoire.ParseContext.Column">
+            <summary>
+            Reports the column the parser is on
+            </summary>
+            <remarks>The column starts at one.</remarks>
+        </member>
+        <member name="P:Grimoire.ParseContext.Position">
+            <summary>
+            Reports the position the parser is on
+            </summary>
+            <remarks>The position starts at zero.</remarks>
+        </member>
+        <member name="P:Grimoire.ParseContext.Current">
+            <summary>
+            Reports the current character, or -1 if past end of stream
+            </summary>
+        </member>
+    </members>
+</doc>
