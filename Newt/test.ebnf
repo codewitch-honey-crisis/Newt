@@ -1,0 +1,9 @@
+﻿S<start>=A;
+A= B a C | B a d;
+B= a|;
+C = D|b;
+D=C|c;
+a="a";
+b="b";
+c="c";
+c="d";

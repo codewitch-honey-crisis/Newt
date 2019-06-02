@@ -1,0 +1,38 @@
+﻿grammar<start>= production { production };
+
+production= identifier [ "<" attributes ">" ] "=" expressions ";";
+
+expressions= expression "|" expressions | expression |;
+
+expression= { symbol };
+
+symbol= literal | regex | identifier | 
+	"(" expressions ")" | 
+	"[" expressions "]" |
+	"{" expressions "}";
+
+attributes= attribute { "," attribute };
+attribute= identifier [ "=" attrvalue ];
+attrvalue = literal | integer | identifier ;
+
+literal= '"([^"\\]|\\.)*"';
+regex= '\'([^\'\\]|\\.)*\'';
+identifier= '[A-Z_a-z][\-0-9A-Z_a-z]*';
+integer= '\-?[0-9]+';
+
+whitespace<hidden>= '[ \v\f\t\r\n]+';
+lineComment<hidden>= '//[^\n]*';
+blockComment<hidden,blockEnd="*/">= "/*";
+
+or="|";
+lt="<";
+gt=">";
+eq="=";
+semi=";";
+comma=",";
+lparen="(";
+rparen=")";
+lbracket="[";
+rbracket="]";
+lbrace="{";
+rbrace="}";
