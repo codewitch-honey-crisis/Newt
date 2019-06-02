@@ -47,26 +47,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NewtCore.cs">
-      <Link>NewtCore.cs</Link>
+    <Compile Include="..\Newt\Runtimes\ISymbolResolver.cs">
+      <Link>NewtRT\ISymbolResolver.cs</Link>
     </Compile>
-    <Compile Include="Cfg.cs" />
-    <Compile Include="CollectionUtility.cs" />
-    <Compile Include="CSharpUtility.cs" />
-    <Compile Include="Ebnf.cs" />
-    <Compile Include="FA.cs" />
-    <Compile Include="FA2.cs" />
+    <Compile Include="..\Newt\Runtimes\LL1ParserBase.cs">
+      <Link>NewtRT\LL1ParserBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Newt\Runtimes\LLParser.cs">
+      <Link>NewtRT\LLParser.cs</Link>
+    </Compile>
+    <Compile Include="..\Newt\Runtimes\ParseContext.cs">
+      <Link>NewtRT\ParseContext.cs</Link>
+    </Compile>
+    <Compile Include="..\Newt\Runtimes\ParseNode.cs">
+      <Link>NewtRT\ParseNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Newt\Runtimes\ParserUtility.cs">
+      <Link>NewtRT\ParserUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Newt\Runtimes\TableDrivenLL1Parser.cs">
+      <Link>NewtRT\TableDrivenLL1Parser.cs</Link>
+    </Compile>
+    <Compile Include="EbnfParser.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrderedCollectionEqualityComparer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RuntimeLL1Parser2.cs" />
-    <Compile Include="TableDrivenLL1Parser2.cs" />
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -96,6 +106,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>echo dotnet "$(ProjectDir)..\bin\Debug\netcoreapp2.1\newt.dll" "$(ProjectDir)Ebnf.ebnf" "$(ProjectDir)EbnfParser.cs"</PreBuildEvent>
+    <PreBuildEvent>dotnet "$(ProjectDir)..\Newt\bin\Debug\netcoreapp2.1\newt.dll" "$(ProjectDir)Ebnf.ebnf" "$(ProjectDir)EbnfParser.cs"</PreBuildEvent>
   </PropertyGroup>
 </Project>

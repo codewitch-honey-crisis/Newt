@@ -19,15 +19,13 @@ namespace HighlighterDemo
 {
 	public partial class Main : Form
 	{
-		RuntimeLL1Parser _parser;
+#if PARSER
+		EbnfParser _parser;
+#endif
 		public Main()
 		{
 			InitializeComponent();
-			var doc = EbnfDocument.ReadFrom(@"..\..\Ebnf.ebnf");
-			var cfg = doc.ToCfGrammar();
-			//cfg.PrepareLL1();
-			var lexer = doc.ToLexer(cfg);
-			_parser = new RuntimeLL1Parser(cfg, lexer, null);
+			_parser = new EbnfParser();
 			return;
 		}
 
@@ -47,7 +45,7 @@ namespace HighlighterDemo
 			{
 				// this is so much easier with a tree involved.
 				tree = _parser.ParseSubtree();
-				Debug.WriteLine(tree.ToString(_parser));
+				Debug.WriteLine(tree);
 			}
 			catch
 			{
@@ -65,35 +63,35 @@ namespace HighlighterDemo
 				// get what and where to color from each node 
 				// based on what "kind" of node it is
 
-				if (Equals("symbol",_parser.GetSymbolById(pn.SymbolId))) // symbol
+				if (Equals("symbol",pn.Symbol)) // symbol
 				{
 
 					EditBox.Select((int)pn.Position, pn.Length);
 					EditBox.SelectionColor = Color.Blue;
 
 				}
-				else if (Equals("regex", _parser.GetSymbolById(pn.SymbolId)))
+				else if (Equals("regex", pn.Symbol))
 				{
 
 					EditBox.Select((int)pn.Position, pn.Length);
 					EditBox.SelectionColor = Color.DarkRed;
 
 				}
-				else if (Equals("literal", _parser.GetSymbolById(pn.SymbolId)))
+				else if (Equals("literal", pn.Symbol))
 				{
 
 					EditBox.Select((int)pn.Position, pn.Length);
 					EditBox.SelectionColor = Color.DarkCyan;
 
 				}
-				else if (Equals("production", _parser.GetSymbolById(pn.SymbolId)))
+				else if (Equals("production", pn.Symbol))
 				{
 
 					EditBox.Select((int)pn.Position, pn.Length);
 					EditBox.SelectionColor = Color.Black;
 
 				}
-				else if (Equals("attribute", _parser.GetSymbolById(pn.SymbolId)))
+				else if (Equals("attribute", pn.Symbol))
 				{
 
 					EditBox.Select((int)pn.Position, pn.Length);
