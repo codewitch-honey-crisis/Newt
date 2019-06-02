@@ -8,7 +8,7 @@ namespace Grimoire
 	/// Represents a rule in a context-free grammar
 	/// </summary>
 	/// <remarks>This class has value semantics</remarks>
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal

@@ -4,6 +4,11 @@ using System.Text;
 
 namespace Grimoire
 {
+#if GRIMOIRELIB || NEWT
+	public
+#else
+	internal
+#endif
 	class TableDrivenLL1Parser : LL1ParserBase
 	{
 		public TableDrivenLL1Parser(

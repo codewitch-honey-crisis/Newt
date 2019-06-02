@@ -8,7 +8,7 @@ namespace Grimoire
 	/// Represents the base class for all EBNF expressions
 	/// </summary>
 	/// <remarks>Make sure derived classes implement <see cref="ICloneable"/> and value semantics</remarks>
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal

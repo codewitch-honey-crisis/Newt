@@ -23,7 +23,7 @@ namespace Grimoire
 	/// Represents a state in a finite state machine.
 	/// </summary>	
 	/// <remarks>This class is essentially a regular expression engine and code generator.</remarks>
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal
@@ -2273,7 +2273,7 @@ namespace Grimoire
 		/// The options used for rendering dot graphs
 		/// </summary>
 		/// <remarks>Currently, this is little more than a placeholder for future options like coloring of states</remarks>
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 		public
 #else
 		internal
@@ -2305,7 +2305,7 @@ namespace Grimoire
 			foreach (KeyValuePair<char, char> range in ranges)
 				_AppendRangeTo(builder, range);
 		}
-		public static void _AppendRangeTo(StringBuilder builder, KeyValuePair<char, char> range)
+		static void _AppendRangeTo(StringBuilder builder, KeyValuePair<char, char> range)
 		{
 			_AppendRangeCharTo(builder, range.Key);
 			if (0 == range.Value.CompareTo(range.Key)) return;

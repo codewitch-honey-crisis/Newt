@@ -9,6 +9,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>C:\dev\Newt\newt.apidoc.xml</DocumentationFile>
+    <DefineConstants>TRACE;NEWT</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NEWT</DefineConstants>
   </PropertyGroup>
 
 </Project>

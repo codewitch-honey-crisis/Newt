@@ -13,7 +13,7 @@
 	/// An exception encountered during parsing where the stream contains one thing, but another is expected
 	/// </summary>
 	[Serializable]
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal
@@ -46,7 +46,7 @@
 	#endregion ExpectingException
 
 	#region ParseContext
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal

@@ -9,7 +9,7 @@ namespace Grimoire
 	/// Represents an EBNF grammar document
 	/// </summary>
 	/// <remarks>This class implements value semantics.</remarks>
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal

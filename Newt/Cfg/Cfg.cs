@@ -8,7 +8,7 @@ namespace Grimoire
 	/// Represents a Context-Free Grammar, or CFG, which is a series of rules.
 	/// </summary>
 	/// <remarks>This class implements value semantics</remarks>
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal

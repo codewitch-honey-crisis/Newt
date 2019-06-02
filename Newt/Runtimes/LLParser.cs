@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Grimoire
 {
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal
@@ -18,7 +18,7 @@ namespace Grimoire
 		Error=4,
 		EndDocument=5
 	}
-#if GRIMOIRELIB
+#if GRIMOIRELIB || NEWT
 	public
 #else
 	internal
