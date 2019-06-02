@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NEWT</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;NEWT</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Newt\Runtimes\ISymbolResolver.cs" Link="ISymbolResolver.cs" />
+    <Compile Include="..\Newt\Runtimes\LL1ParserBase.cs" Link="LL1ParserBase.cs" />
+    <Compile Include="..\Newt\Runtimes\LLParser.cs" Link="LLParser.cs" />
+    <Compile Include="..\Newt\Runtimes\ParseContext.cs" Link="ParseContext.cs" />
+    <Compile Include="..\Newt\Runtimes\ParseNode.cs" Link="ParseNode.cs" />
+    <Compile Include="..\Newt\Runtimes\ParserUtility.cs" Link="ParserUtility.cs" />
+    <Compile Include="..\Newt\Runtimes\TableDrivenLL1Parser.cs" Link="TableDrivenLL1Parser.cs" />
+  </ItemGroup>
+
+</Project>

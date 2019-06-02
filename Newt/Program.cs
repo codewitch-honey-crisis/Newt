@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NEWT
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Grimoire;
@@ -201,3 +202,4 @@ namespace Newt
 		}
 	}
 }
+#endif
