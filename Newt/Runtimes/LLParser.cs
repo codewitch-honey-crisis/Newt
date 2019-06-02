@@ -28,8 +28,9 @@ namespace Grimoire
 		public abstract LLNodeType NodeType { get; }
 
 		public abstract int SymbolId { get; }
+		public virtual string Symbol { get { return GetSymbolById(SymbolId); } }
 		public abstract string Value { get; }
-
+		public abstract object ParsedValue { get; }
 		public abstract int Line { get; }
 		public abstract int Column { get; }
 		public abstract long Position { get; }
@@ -65,20 +66,23 @@ namespace Grimoire
 						break;
 				}
 				result.SymbolId = id;
+				result.Symbol = Symbol;
 				return result;
 			}
 			else if (LLNodeType.Terminal == NodeType)
 			{
 				result.SetLineInfo(Line, Column, Position);
 				result.SymbolId = id;
+				result.Symbol = Symbol;
 				result.Value = Value;
-				//result.ParsedValue = ParsedValue;
+				result.ParsedValue = ParsedValue;
 				return result;
 			}
 			else if (LLNodeType.Error == NodeType)
 			{
 				result.SetLineInfo(Line, Column, Position);
 				result.SymbolId = id;
+				result.Symbol = Symbol;
 				result.Value = Value;
 				result.ParsedValue = Value;
 				return result;

@@ -108,6 +108,17 @@ namespace Grimoire
 				return null;
 			}
 		}
+		public override object ParsedValue {
+			get {
+				if (LLNodeType.Terminal == NodeType)
+				{
+					Type t = GetType(Token.SymbolId);
+					if (null == t) return Value;
+					return ParserUtility.GetParsedValue(t, Value);
+				}
+				return Value;
+			}
+		}
 		public override LLNodeType NodeType => _nodeType;
 
 		protected bool Panic()

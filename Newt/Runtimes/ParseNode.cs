@@ -15,7 +15,7 @@ namespace Grimoire
 		int _line;
 		int _column;
 		long _position;
-		public object ParsedValue { get; set; }
+		
 		public ParseNode Parent {
 			get {
 				ParseNode result = null;
@@ -129,24 +129,20 @@ namespace Grimoire
 		}
 
 		public int SymbolId { get; set; }
+		public string Symbol { get; set; }
 		public string Value { get; set; }
+		public object ParsedValue { get; set; }
+
 		public IList<ParseNode> Children { get; } = new List<ParseNode>();
 
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
-			AppendTreeTo(sb);
+			_AppendTreeTo(sb,this);
 			return sb.ToString();
 		}
-		public string ToString(ISymbolResolver resolver)
-		{
-			var sb = new StringBuilder();
-			AppendTreeTo(sb, resolver);
-			return sb.ToString();
-		}
-
-		public void AppendTreeTo(StringBuilder result, ISymbolResolver resolver = null) { AppendTreeTo(result, this, resolver); }
-		public static void AppendTreeTo(StringBuilder result, ParseNode node, ISymbolResolver resolver = null)
+		
+		static void _AppendTreeTo(StringBuilder result, ParseNode node)
 		{
 			// adapted from https://stackoverflow.com/questions/1649027/how-do-i-print-out-a-tree-structure
 			List<ParseNode> firstStack = new List<ParseNode>();
@@ -173,13 +169,8 @@ namespace Grimoire
 					{
 						indent += (childListStack[i].Count > 0) ? "|  " : "   ";
 					}
-					var s = node.SymbolId.ToString();
-					if (null != resolver)
-						s = Convert.ToString(resolver.GetSymbolById(node.SymbolId));
-					if (s == node.SymbolId.ToString())
-						result.Append(string.Concat(indent, "+- ", s, " ", node.Value ?? "").TrimEnd());
-					else
-						result.Append(string.Concat(indent, "+- ", s, " ", node.Value ?? "").TrimEnd());
+					var s = node.Symbol;
+					result.Append(string.Concat(indent, "+- ", s, " ", node.Value ?? "").TrimEnd());
 					result.AppendLine();// string.Concat(" at line ", node.Line, ", column ", node.Column, ", position ", node.Position, ", length of ", node.Length));
 					if (node.Children.Count > 0)
 					{

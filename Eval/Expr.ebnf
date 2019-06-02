@@ -1,0 +1,9 @@
+﻿expr<start>= expr add term | term;
+term = term mul factor | factor;
+factor = lparen expr rparen | int;
+add = '[+\-]';
+mul = '[/\*]';
+lparen = "(";
+rparen = ")";
+int<type="int">= '[0-9]+';
+whitespace<hidden>= '[ \t\r\n]+';
