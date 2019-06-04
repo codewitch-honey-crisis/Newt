@@ -2,7 +2,7 @@
   "profiles": {
     "Newt": {
       "commandName": "Project",
-      "commandLineArgs": "..\\..\\..\\..\\Eval\\Expr.ebnf"
+      "commandLineArgs": "..\\..\\..\\ebnf.ebnf"
     }
   }
 }

@@ -12,10 +12,14 @@ namespace Grimoire
 	abstract class LL1ParserBase : LLParser
 	{
 		int _symbolId = -1;
+		int _errorId = -1;
+		int _eosId = -1;
 		LLNodeType _nodeType = LLNodeType.Initial;
 		StringBuilder _lexerBuffer = new StringBuilder();
+		
 		protected LL1ParserBase(ParseContext parseContext = null) { ParseContext = parseContext; }
-
+		protected int EosId { get { if (-1 == _eosId) _eosId = GetSymbolId("#EOS"); return _eosId; } }
+		protected int ErrorId { get { if (-1 == _errorId) _errorId = GetSymbolId("#ERROR"); return _errorId; } }
 		public override int Line => (LLNodeType.Error == _nodeType) ? ErrorToken.Line : Token.Line;
 		public override int Column => (LLNodeType.Error == _nodeType) ? ErrorToken.Column : Token.Column;
 		public override long Position => (LLNodeType.Error == _nodeType) ? ErrorToken.Position : Token.Position;
@@ -51,7 +55,7 @@ namespace Grimoire
 			{
 				if (-1 == ParseContext.Current)
 				{
-					Token = (SymbolId: GetSymbolId("#EOS"), Value: null, Line: ParseContext.Line, Column: ParseContext.Column, Position: ParseContext.Position, null, null);
+					Token = (SymbolId: EosId, Value: null, Line: ParseContext.Line, Column: ParseContext.Column, Position: ParseContext.Position, null, null);
 					break;
 				}
 				else
@@ -92,7 +96,7 @@ namespace Grimoire
 		public override int SymbolId {
 			get {
 				if (LLNodeType.Error == _nodeType)
-					return GetSymbolId("#ERROR");
+					return ErrorId;
 				return (0 > _symbolId) ? ~_symbolId : _symbolId;
 			}
 		}
@@ -127,20 +131,19 @@ namespace Grimoire
 			var l = ParseContext.Line;
 			var c = ParseContext.Column;
 			var pos = ParseContext.Position;
-			ErrorToken = (GetSymbolId("#ERROR"), "", l, c, pos, ErrorToken.ExpectingRanges, ErrorToken.ExpectingSymbols);
+			ErrorToken = (ErrorId, "", l, c, pos, ErrorToken.ExpectingRanges, ErrorToken.ExpectingSymbols);
 			var sb = new StringBuilder();
 			bool first = true;
 			while (first || (!Stack.Contains(Token.SymbolId) && -1 != ParseContext.Current))
 			{
 				first = false;
-				ErrorToken = (GetSymbolId("#ERROR"), string.Concat(ErrorToken.Value, Token.Value), l, c, pos, Token.ExpectingRanges, Token.ExpectingSymbols);
+				ErrorToken = (ErrorId, string.Concat(ErrorToken.Value, Token.Value), l, c, pos, Token.ExpectingRanges, Token.ExpectingSymbols);
 				if (-1 == ParseContext.Current)
 				{
-					Token = (SymbolId: GetSymbolId("#EOS"), Value: "", Line: ParseContext.Line, Column: ParseContext.Column, Position: ParseContext.Position, null, null);
+					Token = (SymbolId: EosId, Value: "", Line: ParseContext.Line, Column: ParseContext.Column, Position: ParseContext.Position, null, null);
 				}
 				else
-				{
-
+				{ 
 					var t = Lex(_lexerBuffer);
 					Token = (SymbolId: t.SymbolId, Value: t.Value, Line: l, Column: c, Position: pos, t.ExpectingRanges, t.ExpectingSymbols);
 				}

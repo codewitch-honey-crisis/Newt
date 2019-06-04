@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.9.3035\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.9.3035\build\Microsoft.VSSDK.BuildTools.props')" />
+  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.9.3041\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.9.3041\build\Microsoft.VSSDK.BuildTools.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -19,7 +19,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{79585438-A81B-4B54-914F-D45D930AAC4E}</ProjectGuid>
+    <ProjectGuid>{BB9FD614-46C3-4E21-AB18-1D7321FECAE2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NewtVS</RootNamespace>
@@ -53,105 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Newt\Cfg\Cfg.cs">
-      <Link>Cfg\Cfg.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Cfg\Cfg.CSharpCodeGenerator.cs">
-      <Link>Cfg\Cfg.CSharpCodeGenerator.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Cfg\CfgException.cs">
-      <Link>Cfg\CfgException.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Cfg\CfgMessage.cs">
-      <Link>Cfg\CfgMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Cfg\CfgRule.cs">
-      <Link>Cfg\CfgRule.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Collections\CollectionUtility.cs">
-      <Link>Collections\CollectionUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Collections\ListDictionary.cs">
-      <Link>Collections\ListDictionary.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Collections\OrderedCollectionEqualityComparer.cs">
-      <Link>Collections\OrderedCollectionEqualityComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\CSharp\CSharpUtility.cs">
-      <Link>CSharp\CSharpUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfBinaryExpression.cs">
-      <Link>Ebnf\EbnfBinaryExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfConcatExpression.cs">
-      <Link>Ebnf\EbnfConcatExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfDocument.cs">
-      <Link>Ebnf\EbnfDocument.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfException.cs">
-      <Link>Ebnf\EbnfException.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfExpression.cs">
-      <Link>Ebnf\EbnfExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfLiteralExpression.cs">
-      <Link>Ebnf\EbnfLiteralExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfMessage.cs">
-      <Link>Ebnf\EbnfMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfOptionalExpression.cs">
-      <Link>Ebnf\EbnfOptionalExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfOrExpression.cs">
-      <Link>Ebnf\EbnfOrExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfProduction.cs">
-      <Link>Ebnf\EbnfProduction.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfRefExpression.cs">
-      <Link>Ebnf\EbnfRefExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfRegexExpression.cs">
-      <Link>Ebnf\EbnfRegexExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfRepeatExpression.cs">
-      <Link>Ebnf\EbnfRepeatExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfUnaryExpression.cs">
-      <Link>Ebnf\EbnfUnaryExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\FA\FA.cs">
-      <Link>FA\FA.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\FA\FA2.cs">
-      <Link>FA\FA2.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ISymbolResolver.cs">
-      <Link>Runtimes\ISymbolResolver.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\LL1ParserBase.cs">
-      <Link>Runtimes\LL1ParserBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\LLParser.cs">
-      <Link>Runtimes\LLParser.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParseContext.cs">
-      <Link>Runtimes\ParseContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParseNode.cs">
-      <Link>Runtimes\ParseNode.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParserUtility.cs">
-      <Link>Runtimes\ParserUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\TableDrivenLL1Parser.cs">
-      <Link>Runtimes\TableDrivenLL1Parser.cs</Link>
-    </Compile>
-    <Compile Include="Attributes.cs" />
-    <Compile Include="NewtLL1.cs" />
-    <Compile Include="NewtVSPackage.cs" />
+    <Compile Include="NewtVS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -163,7 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.html" />
-    <Content Include="Resources\NewtVSPackage.ico" />
+    <Content Include="Resources\NewtVS.ico" />
     <Content Include="stylesheet.css" />
   </ItemGroup>
   <ItemGroup>
@@ -267,12 +169,12 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.10\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.EmbedInteropTypes.15.0.10\build\Microsoft.VisualStudio.SDK.EmbedInteropTypes.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.9.3035\build\Microsoft.VSSDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.9.3035\build\Microsoft.VSSDK.BuildTools.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.9.3035\build\Microsoft.VSSDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.9.3035\build\Microsoft.VSSDK.BuildTools.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.9.3041\build\Microsoft.VSSDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.9.3041\build\Microsoft.VSSDK.BuildTools.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.15.9.3041\build\Microsoft.VSSDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.15.9.3041\build\Microsoft.VSSDK.BuildTools.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets'))" />
   </Target>
-  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.9.3035\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.9.3035\build\Microsoft.VSSDK.BuildTools.targets')" />
+  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.15.9.3041\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.15.9.3041\build\Microsoft.VSSDK.BuildTools.targets')" />
   <Import Project="..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.33\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" />
   <Import Project="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.8.122\build\Microsoft.VisualStudio.Threading.Analyzers.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

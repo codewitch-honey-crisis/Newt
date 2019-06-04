@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="NewtVS.87beab43-436f-4cd2-ab75-ba64f50e956c" Version="1.0" Language="en-US" Publisher="Danah Gaz" />
+    <Identity Id="NewtVS.a3731ca0-014b-42f9-849f-8009cd74b105" Version="1.0" Language="en-US" Publisher="Danah Gaz" />
     <DisplayName>NewtVS</DisplayName>
     <Description>Empty VSIX Project.</Description>
   </Metadata>

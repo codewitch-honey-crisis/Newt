@@ -18,7 +18,7 @@ namespace Eval
 				if (string.IsNullOrEmpty(line)) return;
 				var pc = ParseContext.Create(line);
 				parser.Restart(pc);
-				var ptree = parser.ParseSubtree(true);
+				var ptree = parser.ParseSubtree();
 				// parse subtree will not read the whole
 				// text, just the subtree so in order to 
 				// validate the *entire* input we must read
@@ -33,7 +33,7 @@ namespace Eval
 					}
 				}
 				
-				// check if there's an error currently. If ParseSubtree encounters one it stops reading.
+				// check if there's an error currently.
 				switch (parser.NodeType)
 				{
 					case LLNodeType.Error:
@@ -43,7 +43,14 @@ namespace Eval
 				
 				Console.WriteLine(ptree);
 				Console.WriteLine();
-				Console.WriteLine("Evaluation: {0} = {1}",line, Eval(ptree));
+				try
+				{
+					Console.WriteLine("Evaluation: {0} = {1}", line, Eval(ptree));
+				}
+				catch(Exception ex)
+				{
+					Console.Error.WriteLine("Evaluation error: " + ex.Message);
+				}
 			}
 #endif
 		}
@@ -81,16 +88,16 @@ namespace Eval
 							switch (op)
 							{
 								case "*":
-									lhs = lhs * rhs;
+									lhs *= rhs;
 									break;
 								case "/":
-									lhs = lhs / rhs;
+									lhs /= rhs;
 									break;
 								case "+":
-									lhs = lhs + rhs;
+									lhs += rhs;
 									break;
 								case "-":
-									lhs = lhs - rhs;
+									lhs -= rhs;
 									break;
 							}
 							++i;

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Newt\Newt.csproj" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet &quot;$(ProjectDir)..\Newt\bin\Debug\netcoreapp2.1\newt.dll&quot; &quot;$(ProjectDir)ebnf.ebnf&quot; &quot;$(ProjectDir)EbnfParser.cs&quot;" />
+  </Target>
+
+</Project>

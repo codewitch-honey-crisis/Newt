@@ -13,17 +13,24 @@ symbol= literal | regex | identifier |
 
 attributes= attribute { "," attribute };
 attribute= identifier [ "=" attrvalue ];
-attrvalue = literal | integer | identifier ;
+attrvalue= literal | integer | identifier;
+
+//
+// terminals
+//
 
 literal= '"([^"\\]|\\.)*"';
 regex= '\'([^\'\\]|\\.)*\'';
 identifier= '[A-Z_a-z][\-0-9A-Z_a-z]*';
 integer= '\-?[0-9]+';
 
+// hide comments and whitespace
 whitespace<hidden>= '[ \v\f\t\r\n]+';
 lineComment<hidden>= '//[^\n]*';
 blockComment<hidden,blockEnd="*/">= "/*";
 
+// defining these isn't required, but gives
+// us better constant names
 or="|";
 lt="<";
 gt=">";

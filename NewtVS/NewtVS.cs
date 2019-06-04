@@ -34,19 +34,19 @@ namespace NewtVS
 	/// </remarks>
 	[PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
 	[InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
-	[Guid(NewtVSPackage.PackageGuidString)]
+	[Guid(NewtVS.PackageGuidString)]
 	[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-	public sealed class NewtVSPackage : AsyncPackage
+	public sealed class NewtVS : AsyncPackage
 	{
 		/// <summary>
-		/// NewtVSPackage GUID string.
+		/// NewtVS GUID string.
 		/// </summary>
-		public const string PackageGuidString = "cc140009-f8cb-4444-844b-a0d086d9815c";
+		public const string PackageGuidString = "47d125fd-028b-4c45-9390-fca552b0396d";
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="NewtVSPackage"/> class.
+		/// Initializes a new instance of the <see cref="NewtVS"/> class.
 		/// </summary>
-		public NewtVSPackage()
+		public NewtVS()
 		{
 			// Inside this method you can place any initialization code that does not require
 			// any Visual Studio service because at this point the package object is created but
@@ -68,6 +68,7 @@ namespace NewtVS
 			// When initialized asynchronously, the current thread may be a background thread at this point.
 			// Do any initialization that requires the UI thread after switching to the UI thread.
 			await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+			System.Diagnostics.Debug.WriteLine("Hello World!");
         }
 
 		#endregion

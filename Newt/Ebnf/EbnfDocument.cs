@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define PARSER
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -104,8 +105,9 @@ namespace Grimoire
 		public EbnfDocument Clone()
 		{
 			var result = new EbnfDocument();
-			foreach(var prod in Productions)
+			foreach (var prod in Productions)
 				result.Productions.Add(prod.Key, prod.Value.Clone());
+			
 			return result;
 		}
 		object ICloneable.Clone() => Clone();
@@ -164,10 +166,144 @@ namespace Grimoire
 			}
 			return result;
 		}
+		public string GetIdForExpression(EbnfExpression expression)
+		{
+			foreach (var prod in Productions)
+				if (Equals(prod.Value.Expression, expression))
+					return prod.Key;
+			return null;
+		}
+		void _ValidateExpression(EbnfExpression expr, IDictionary<string, int> refCounts, IList<EbnfMessage> messages)
+		{
+			var l = expr as EbnfLiteralExpression;
+			if (null != l)
+			{
+
+				var i = GetIdForExpression(l);
+				// don't count itself. only things just like itself
+				if (null != i && !ReferenceEquals(Productions[i].Expression, l))
+					refCounts[i] += 1;
+			}
+			var rx = expr as EbnfRegexExpression;
+			if (null != rx)
+			{
+				try
+				{
+					FA.Parse(rx.Value);
+				}
+				catch(ExpectingException)
+				{
+					messages.Add(
+						new EbnfMessage(
+							EbnfErrorLevel.Error, 12,
+							"Invalid regular expression",
+							expr.Line, expr.Column, expr.Position));
+				}
+				var i = GetIdForExpression(rx);
+				if (null != i && !ReferenceEquals(Productions[i].Expression, l))
+					refCounts[i] += 1;
+			}
+			var r = expr as EbnfRefExpression;
+			if (null != r)
+			{
+				int rc;
+				if (null == r.Symbol)
+				{
+					messages.Add(
+						new EbnfMessage(
+							EbnfErrorLevel.Error, 4,
+							"Null reference expression",
+							expr.Line, expr.Column, expr.Position));
+					return;
+				}
+				if (!refCounts.TryGetValue(r.Symbol, out rc))
+				{
+					messages.Add(
+						new EbnfMessage(
+							EbnfErrorLevel.Error, 1,
+							string.Concat(
+								"Reference to undefined symbol \"",
+								r.Symbol,
+								"\""),
+							expr.Line, expr.Column, expr.Position));
+					return;
+				}
+				refCounts[r.Symbol] = rc + 1;
+				return;
+			}
+			var b = expr as EbnfBinaryExpression;
+			if (null != b)
+			{
+				if (null == b.Left && null == b.Right)
+				{
+					messages.Add(
+						new EbnfMessage(
+							EbnfErrorLevel.Warning, 3,
+								"Nil expression",
+							expr.Line, expr.Column, expr.Position));
+					return;
+				}
+				_ValidateExpression(b.Left, refCounts, messages);
+				_ValidateExpression(b.Right, refCounts, messages);
+				return;
+			}
+			var u = expr as EbnfUnaryExpression;
+			if (null != u)
+			{
+				if (null == u.Expression)
+				{
+					messages.Add(
+						new EbnfMessage(
+							EbnfErrorLevel.Warning, 3,
+								"Nil expression",
+							expr.Line, expr.Column, expr.Position));
+					return;
+				}
+				_ValidateExpression(u.Expression, refCounts, messages);
+			}
+		}
+		public IList<EbnfMessage> Validate(bool throwIfErrors = false)
+		{
+			var result = new List<EbnfMessage>();
+			var refCounts = new Dictionary<string, int>(EqualityComparer<string>.Default);
+
+			foreach (var prod in Productions)
+				refCounts.Add(prod.Key, 0);
+			foreach (var prod in Productions)
+			{
+				_ValidateExpression(prod.Value.Expression, refCounts, result);
+			}
+			foreach (var rc in refCounts)
+			{
+				if (0 == rc.Value)
+				{
+					var prod = Productions[rc.Key];
+					object o;
+					var isHidden = prod.Attributes.TryGetValue("hidden", out o) && o is bool && (bool)o;
+					if(!isHidden && !Equals(rc.Key,StartProduction))
+						result.Add(new EbnfMessage(EbnfErrorLevel.Warning, 2, string.Concat("Unreferenced production \"", rc.Key, "\""),
+							prod.Line, prod.Column, prod.Position));
+				}
+			}
+			if (throwIfErrors)
+				EbnfException.ThrowIfErrors(result);
+			return result;
+
+		}
 		public IList<EbnfMessage> Prepare(bool throwIfErrors=true)
 		{
 			var result = new List<EbnfMessage>();
-			result.AddRange(DeclareImplicitTerminals());
+			var msgs = Validate(false);
+			result.AddRange(msgs);
+			var hasError = false;
+			foreach(var msg in msgs) 
+				if(EbnfErrorLevel.Error==msg.ErrorLevel)
+				{
+					hasError = true;
+					break;
+				}
+			if(!hasError)
+				result.AddRange(DeclareImplicitTerminals());
 
 			if (throwIfErrors)
 				EbnfException.ThrowIfErrors(result);
@@ -247,6 +383,83 @@ namespace Grimoire
 		}
 		public static EbnfDocument ReadFrom(TextReader reader) => Parse(ParseContext.Create(reader));
 		public static EbnfDocument Parse(IEnumerable<char> @string) => Parse(ParseContext.Create(@string));
+
+
+		public static EbnfDocument Parse2(ParseContext pc)
+		{
+			var doc = new EbnfDocument();
+			var parser = new EbnfParser(pc);
+			while(parser.Read())
+			{
+				if(EbnfParser.production==parser.SymbolId)
+				{
+					_ReadProduction(doc,parser);
+				}
+			}
+			return doc;
+		}
+		static void _ReadProduction(EbnfDocument doc,EbnfParser parser)
+		{
+			parser.Read();
+			var id = parser.Value;
+			var prod = new EbnfProduction();
+			parser.Read();
+			if (EbnfParser.lt == parser.SymbolId)
+			{
+				parser.Read();
+				_ReadAttributes(prod.Attributes,parser);
+				parser.Read();
+			}
+			parser.Read();
+			prod.Expression = _ReadExpressions(parser);
+			
+		}
+		static EbnfExpression _ReadExpressions(EbnfParser parser)
+		{
+			EbnfExpression result = null;
+			throw new NotImplementedException();
+			return result;
+		}
+		static void _ReadAttributes(IDictionary<string,object> attrs,EbnfParser parser)
+		{
+			parser.Read();
+			while(EbnfParser.attribute==parser.SymbolId)
+			{
+				parser.Read();
+				var id = parser.Value;
+				parser.Read();
+				object val = true;
+				if(EbnfParser.eq==parser.SymbolId)
+				{
+					parser.Read();
+					parser.Read();
+					switch(parser.SymbolId)
+					{
+						case EbnfParser.identifier:
+
+							if ("null" == parser.Value)
+								val = null;
+							else if ("true" == parser.Value)
+								val = true;
+							else if ("false" == parser.Value)
+								val = false;
+							else
+								throw new ExpectingException("Expecting true, false, or null.");
+							break;
+						case EbnfParser.integer:
+							val = int.Parse(parser.Value);
+							break;
+						case EbnfParser.literal:
+							val = ParseContext.Create(parser.Value).ParseJsonString();
+							break;
+					}
+					parser.Read();
+				}
+				attrs.Add(id, val);
+				if (EbnfParser.comma == parser.SymbolId)
+					parser.Read();
+			}
+		}
 		public static EbnfDocument Parse(ParseContext pc)
 		{
 			var doc = new EbnfDocument();
@@ -259,7 +472,6 @@ namespace Grimoire
 		}
 		static void _ParseProduction(EbnfDocument doc, ParseContext pc)
 		{
-
 			pc.TrySkipCCommentsAndWhiteSpace();
 			var line = pc.Line;
 			var column = pc.Column;

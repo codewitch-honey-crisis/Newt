@@ -11,6 +11,8 @@ namespace Grimoire
 #endif
 	class TableDrivenLL1Parser : LL1ParserBase
 	{
+		int _errorId;
+		int _eosId;
 		public TableDrivenLL1Parser(
 				(int Left, int[] Right)[][] parseTable,
 				(int SymbolId, bool IsNonTerminal,int NonTerminalCount) startingConfiguration,
@@ -89,7 +91,7 @@ namespace Grimoire
 			return -1;
 		}
 		protected override (int SymbolId, string Value, (int First, int Last)[] ExpectingRanges, int[] ExpectingSymbols) Lex(StringBuilder lexerBuffer = null)
-			=> ParserUtility.Lex2(LexTable, -2, ParseContext, lexerBuffer);
+			=> ParserUtility.Lex2(LexTable, ErrorId, ParseContext, lexerBuffer);
 
 		protected override bool ReadImpl()
 		{
@@ -125,7 +127,9 @@ namespace Grimoire
 				if (null!=d)
 				{
 					var tid = Token.SymbolId - StartingConfiguration.NonTerminalCount;
-					(int Left, int[] Right) rule = d[tid];
+					(int Left, int[] Right) rule = (-1, null);
+					if(-1<tid && tid<d.Length)
+						rule = d[tid];
 					if (-1!=rule.Left)
 					{
 						_DoPop();
@@ -151,7 +155,7 @@ namespace Grimoire
 				Panic();
 				return true;
 			}
-			if (GetSymbolId("#EOS")!= Token.SymbolId)
+			if (EosId!= Token.SymbolId)
 			{
 				Panic();
 				return true;

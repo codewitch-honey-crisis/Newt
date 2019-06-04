@@ -89,6 +89,7 @@ namespace Newt
 						return 2;
 					}
 				}
+
 				var hasErrors = false;
 				foreach (var m in doc.Prepare(false))
 				{
@@ -97,7 +98,7 @@ namespace Newt
 					if (EbnfErrorLevel.Error == m.ErrorLevel)
 						hasErrors = true;
 				}
-
+				
 				if (hasErrors)
 				{
 					// make sure to dump the messages
