@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Newt</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;NEWT</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;NEWT</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Newt\Cfg\Cfg.cs" Link="Cfg\Cfg.cs" />
+    <Compile Include="..\Newt\Cfg\Cfg.CSharpCodeGenerator.cs" Link="Cfg\Cfg.CSharpCodeGenerator.cs" />
+    <Compile Include="..\Newt\Cfg\CfgException.cs" Link="Cfg\CfgException.cs" />
+    <Compile Include="..\Newt\Cfg\CfgMessage.cs" Link="Cfg\CfgMessage.cs" />
+    <Compile Include="..\Newt\Cfg\CfgRule.cs" Link="Cfg\CfgRule.cs" />
+    <Compile Include="..\Newt\Collections\CollectionUtility.cs" Link="Collections\CollectionUtility.cs" />
+    <Compile Include="..\Newt\Collections\ListDictionary.cs" Link="Collections\ListDictionary.cs" />
+    <Compile Include="..\Newt\Collections\OrderedCollectionEqualityComparer.cs" Link="Collections\OrderedCollectionEqualityComparer.cs" />
+    <Compile Include="..\Newt\CSharp\CSharpUtility.cs" Link="CSharp\CSharpUtility.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfBinaryExpression.cs" Link="Ebnf\EbnfBinaryExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfConcatExpression.cs" Link="Ebnf\EbnfConcatExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfDocument.cs" Link="Ebnf\EbnfDocument.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfException.cs" Link="Ebnf\EbnfException.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfExpression.cs" Link="Ebnf\EbnfExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfLiteralExpression.cs" Link="Ebnf\EbnfLiteralExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfMessage.cs" Link="Ebnf\EbnfMessage.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfOptionalExpression.cs" Link="Ebnf\EbnfOptionalExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfOrExpression.cs" Link="Ebnf\EbnfOrExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfParser.cs" Link="Ebnf\EbnfParser.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfProduction.cs" Link="Ebnf\EbnfProduction.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfRefExpression.cs" Link="Ebnf\EbnfRefExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfRegexExpression.cs" Link="Ebnf\EbnfRegexExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfRepeatExpression.cs" Link="Ebnf\EbnfRepeatExpression.cs" />
+    <Compile Include="..\Newt\Ebnf\EbnfUnaryExpression.cs" Link="Ebnf\EbnfUnaryExpression.cs" />
+    <Compile Include="..\Newt\FA\FA.cs" Link="FA\FA.cs" />
+    <Compile Include="..\Newt\FA\FA2.cs" Link="FA\FA2.cs" />
+    <Compile Include="..\Newt\RuntimeLL1Parser.cs" Link="RuntimeLL1Parser.cs" />
+    <Compile Include="..\Newt\Runtimes\ISymbolResolver.cs" Link="Runtimes\ISymbolResolver.cs" />
+    <Compile Include="..\Newt\Runtimes\LL1ParserBase.cs" Link="Runtimes\LL1ParserBase.cs" />
+    <Compile Include="..\Newt\Runtimes\LLParser.cs" Link="Runtimes\LLParser.cs" />
+    <Compile Include="..\Newt\Runtimes\ParseContext.cs" Link="Runtimes\ParseContext.cs" />
+    <Compile Include="..\Newt\Runtimes\ParseNode.cs" Link="Runtimes\ParseNode.cs" />
+    <Compile Include="..\Newt\Runtimes\ParserUtility.cs" Link="Runtimes\ParserUtility.cs" />
+    <Compile Include="..\Newt\Runtimes\TableDrivenLL1Parser.cs" Link="Runtimes\TableDrivenLL1Parser.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Cfg\" />
+    <Folder Include="Collections\" />
+    <Folder Include="CSharp\" />
+    <Folder Include="FA\" />
+    <Folder Include="Ebnf\" />
+    <Folder Include="Runtimes\" />
+  </ItemGroup>
+
+</Project>

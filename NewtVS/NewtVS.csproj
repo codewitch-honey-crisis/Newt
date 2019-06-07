@@ -58,105 +58,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Newt\Cfg\Cfg.cs">
-      <Link>Newt\Cfg\Cfg.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Cfg\Cfg.CSharpCodeGenerator.cs">
-      <Link>Newt\Cfg\Cfg.CSharpCodeGenerator.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Cfg\CfgException.cs">
-      <Link>Newt\Cfg\CfgException.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Cfg\CfgMessage.cs">
-      <Link>Newt\Cfg\CfgMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Cfg\CfgRule.cs">
-      <Link>Newt\Cfg\CfgRule.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Collections\CollectionUtility.cs">
-      <Link>Newt\Collections\CollectionUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Collections\ListDictionary.cs">
-      <Link>Newt\Collections\ListDictionary.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Collections\OrderedCollectionEqualityComparer.cs">
-      <Link>Newt\Collections\OrderedCollectionEqualityComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\CSharp\CSharpUtility.cs">
-      <Link>Newt\CSharp\CSharpUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfBinaryExpression.cs">
-      <Link>Newt\Ebnf\EbnfBinaryExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfConcatExpression.cs">
-      <Link>Newt\Ebnf\EbnfConcatExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfDocument.cs">
-      <Link>Newt\Ebnf\EbnfDocument.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfException.cs">
-      <Link>Newt\Ebnf\EbnfException.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfExpression.cs">
-      <Link>Newt\Ebnf\EbnfExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfLiteralExpression.cs">
-      <Link>Newt\Ebnf\EbnfLiteralExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfMessage.cs">
-      <Link>Newt\Ebnf\EbnfMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfOptionalExpression.cs">
-      <Link>Newt\Ebnf\EbnfOptionalExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfOrExpression.cs">
-      <Link>Newt\Ebnf\EbnfOrExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfParser.cs">
-      <Link>Newt\Ebnf\EbnfParser.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfProduction.cs">
-      <Link>Newt\Ebnf\EbnfProduction.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfRefExpression.cs">
-      <Link>Newt\Ebnf\EbnfRefExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfRegexExpression.cs">
-      <Link>Newt\Ebnf\EbnfRegexExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfRepeatExpression.cs">
-      <Link>Newt\Ebnf\EbnfRepeatExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Ebnf\EbnfUnaryExpression.cs">
-      <Link>Newt\Ebnf\EbnfUnaryExpression.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\FA\FA.cs">
-      <Link>Newt\FA\FA.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\FA\FA2.cs">
-      <Link>Newt\FA\FA2.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ISymbolResolver.cs">
-      <Link>Newt\Runtimes\ISymbolResolver.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\LL1ParserBase.cs">
-      <Link>Newt\Runtimes\LL1ParserBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\LLParser.cs">
-      <Link>Newt\Runtimes\LLParser.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParseContext.cs">
-      <Link>Newt\Runtimes\ParseContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParseNode.cs">
-      <Link>Newt\Runtimes\ParseNode.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParserUtility.cs">
-      <Link>Newt\Runtimes\ParserUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\TableDrivenLL1Parser.cs">
-      <Link>Newt\Runtimes\TableDrivenLL1Parser.cs</Link>
-    </Compile>
     <Compile Include="Attributes.cs" />
     <Compile Include="NewtLL1.cs" />
     <Compile Include="NewtVS.cs" />
@@ -307,7 +208,12 @@
       <ManifestResourceName>VSPackage</ManifestResourceName>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\NewtLib\NewtLib.csproj">
+      <Project>{b5af4028-0e2c-4520-aa36-498bd08db4d5}</Project>
+      <Name>NewtLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

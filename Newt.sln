@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewtVS", "NewtVS\NewtVS.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewtRT", "NewtRT\NewtRT.csproj", "{BEC90E0F-A648-4937-B0A8-76E7264F6CF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewtLib", "NewtLib\NewtLib.csproj", "{B5AF4028-0E2C-4520-AA36-498BD08DB4D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{BEC90E0F-A648-4937-B0A8-76E7264F6CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEC90E0F-A648-4937-B0A8-76E7264F6CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEC90E0F-A648-4937-B0A8-76E7264F6CF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5AF4028-0E2C-4520-AA36-498BD08DB4D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5AF4028-0E2C-4520-AA36-498BD08DB4D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5AF4028-0E2C-4520-AA36-498BD08DB4D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5AF4028-0E2C-4520-AA36-498BD08DB4D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
