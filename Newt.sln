@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eval", "Eval\Eval.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighlighterDemo", "HighlighterDemo\HighlighterDemo.csproj", "{77C221BC-716F-4AF7-A09D-BDFCF2748130}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perf", "Perf\Perf.csproj", "{F766B299-9F25-4975-9ACE-A915A5124E46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Perf", "Perf\Perf.csproj", "{F766B299-9F25-4975-9ACE-A915A5124E46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewtVS", "NewtVS\NewtVS.csproj", "{0F523733-A3F9-46C9-A974-D34959EC8380}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{F766B299-9F25-4975-9ACE-A915A5124E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F766B299-9F25-4975-9ACE-A915A5124E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F766B299-9F25-4975-9ACE-A915A5124E46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F523733-A3F9-46C9-A974-D34959EC8380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F523733-A3F9-46C9-A974-D34959EC8380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F523733-A3F9-46C9-A974-D34959EC8380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F523733-A3F9-46C9-A974-D34959EC8380}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using Task = System.Threading.Tasks.Task;
 
-namespace NewtVS
+namespace Grimoire
 {
 	/// <summary>
 	/// This is the class that implements the package exposed by this assembly.
@@ -39,9 +39,9 @@ namespace NewtVS
 	public sealed class NewtVS : AsyncPackage
 	{
 		/// <summary>
-		/// NewtVS GUID string.
+		/// Cauldron GUID string.
 		/// </summary>
-		public const string PackageGuidString = "47d125fd-028b-4c45-9390-fca552b0396d";
+		public const string PackageGuidString = "6A832166-AD92-48DC-A74E-1565179013AB";
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="NewtVS"/> class.
@@ -68,7 +68,7 @@ namespace NewtVS
 			// When initialized asynchronously, the current thread may be a background thread at this point.
 			// Do any initialization that requires the UI thread after switching to the UI thread.
 			await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-			System.Diagnostics.Debug.WriteLine("Hello World!");
+			
         }
 
 		#endregion

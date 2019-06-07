@@ -30,95 +30,14 @@ namespace HighlighterDemo
 			return;
 		}
 
-		void Colorize()
-		{
-			// this is super cheesy. the "right" (ish) way to do it is to modift RtfText directly.
-			// this way flashes and scrolls all over the place
-			// but this is a sample of parsing, not of using the richtextbox!
-#if PARSER
-			var h = EditBox.HideSelection; 
-			EditBox.HideSelection = true;// <--- doesn't seem to work =(
-			string text = EditBox.Text;
-			
-			_parser.Restart(ParseContext.Create(text));
-			ParseNode tree=null;
-			try
-			{
-				// this is so much easier with a tree involved.
-				tree = _parser.ParseSubtree();
-				Debug.WriteLine(tree);
-			}
-			catch
-			{
-				
-				return;
-			}
-			var ss = EditBox.SelectionStart;
-			var sl = EditBox.SelectionLength;
-			EditBox.Select((int)0, text.Length);
-			EditBox.SelectionColor = Color.DarkGreen;
-			
-			// get every node in the tree output as a list.
-			foreach (var pn in tree.FillDescendantsAndSelf())
-			{
-				// get what and where to color from each node 
-				// based on what "kind" of node it is
-
-				if (Equals("symbol", pn.Symbol)) // symbol
-				{
-
-					EditBox.Select((int)pn.Position, pn.Length);
-					EditBox.SelectionColor = Color.Blue;
-
-				}
-				else if (Equals("regex", pn.Symbol))
-				{
-
-					EditBox.Select((int)pn.Position, pn.Length);
-					EditBox.SelectionColor = Color.DarkRed;
-
-				}
-				else if (Equals("literal", pn.Symbol))
-				{
-
-					EditBox.Select((int)pn.Position, pn.Length);
-					EditBox.SelectionColor = Color.DarkCyan;
-
-				}
-				else if (Equals("production", pn.Symbol))
-				{
-
-					EditBox.Select((int)pn.Position, pn.Length);
-					EditBox.SelectionColor = Color.Black;
-
-				}
-				else if (Equals("attribute", pn.Symbol))
-				{
-
-					EditBox.Select((int)pn.Position, pn.Length);
-					EditBox.SelectionColor = Color.DarkOrchid;
-
-				} else if(-2==pn.SymbolId) // error
-				{
-					EditBox.Select((int)pn.Position, pn.Length);
-					EditBox.SelectionColor = Color.DarkRed;
-				}
-			}
-		
-			EditBox.Select(ss, sl);
-			EditBox.HideSelection = h;
-			
-#endif
-
-		}
-
 		private void Main_TextChanged(object sender, EventArgs e)
 		{
 			
-			Colorize2();
+			Colorize();
 		}
-		void Colorize2()
+		void Colorize()
 		{
+#if PARSER
 			if (_colorizing)
 				return;
 			_colorizing = true;
@@ -149,9 +68,6 @@ namespace HighlighterDemo
 						{
 							case EbnfParser.attribute:
 								cols.Push(3);
-								break;
-							case EbnfParser.production:
-								cols.Push(0);
 								break;
 							case EbnfParser.symbol:
 							case EbnfParser.expressions:
@@ -203,6 +119,7 @@ namespace HighlighterDemo
 			EditBox.Rtf = sb.ToString();
 			EditBox.SelectionStart = sel;
 			_colorizing = false;
+#endif
 		}
 
 	}
