@@ -56,7 +56,7 @@ namespace HighlighterDemo
 				Color.BlueViolet,
 				Color.DarkGray));
 			var p = new EbnfParser(ParseContext.Create(text));
-			var pos = 0l;
+			var pos = 0L;
 			var cols = new Stack<int>();
 			cols.Push(0);
 			while (p.Read())
