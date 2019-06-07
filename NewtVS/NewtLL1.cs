@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio;
+﻿#pragma warning disable VSTHRD010
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
@@ -24,15 +25,105 @@ namespace Grimoire
 			pbstrDefaultExtension = ".cs";
 			return pbstrDefaultExtension.Length;
 		}
+		bool ReportMessage(IVsGeneratorProgress p, EbnfMessage m)
+		{
+			try
+			{
+				ThreadHelper.ThrowIfNotOnUIThread();
+				if (null != p)
+				{
+					switch(m.ErrorLevel)
+					{
+						case EbnfErrorLevel.Warning:
+							p.GeneratorError(1, 1, m.Message, (uint)m.Line, (uint)m.Column);
+							return true;
+						case EbnfErrorLevel.Error:
+							p.GeneratorError(0, 1, m.Message, (uint)m.Line, (uint)m.Column);
+							return true;
+					}
+				}
+				
+			}
+			catch
+			{
 
+			}
+			
+			return false;
+		}
+		bool ReportMessage(IVsGeneratorProgress p, CfgMessage m)
+		{
+			try
+			{
+				ThreadHelper.ThrowIfNotOnUIThread();
+				if (null != p)
+				{
+					switch (m.ErrorLevel)
+					{
+						case CfgErrorLevel.Warning:
+							p.GeneratorError(1, 1, m.Message, 0, 0);
+							return true;
+						case CfgErrorLevel.Error:
+							p.GeneratorError(0, 1, m.Message, 0, 0);
+							return true;
+					}
+				}
+				
+			}
+			catch
+			{
+
+			}
+
+			return false;
+		}
+		bool ReportMessage(IVsGeneratorProgress p, string m,int line=0,int column=0,bool error=true)
+		{
+			try
+			{
+				ThreadHelper.ThrowIfNotOnUIThread();
+				if (null != p)
+				{
+					p.GeneratorError((error) ? 0 : 1, 1, m, (uint)line, (uint)column);
+					return true;
+				}
+			}
+			catch
+			{
+
+			}
+
+			return false;
+		}
+		bool ReportProgress(IVsGeneratorProgress p, int step,int steps)
+		{
+			try
+			{
+				ThreadHelper.ThrowIfNotOnUIThread();
+				if (null != p)
+				{
+					p.Progress((uint)step, (uint)steps);
+					return true;
+				}
+				
+			}
+			catch
+			{
+
+			}
+
+			return false;
+		}
 		public int Generate(string wszInputFilePath, string bstrInputFileContents,
 		  string wszDefaultNamespace, IntPtr[] rgbOutputFileContents,
 		  out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
 		{
+
 			try
 			{
 				using (var stm = new MemoryStream())
 				{
+					ReportProgress(pGenerateProgress, 1, 4);
 					EbnfDocument doc = null;
 					var msgs = new List<object>();
 					var sw = new StreamWriter(stm);
@@ -46,15 +137,19 @@ namespace Grimoire
 						catch (ExpectingException ex)
 						{
 							var em = string.Concat("Error parsing grammar: ", ex.Message);
-							msgs.Add(em);
+							if(!ReportMessage(pGenerateProgress, em, ex.Line, ex.Column, true))
+								msgs.Add(em);
 							WriteHeader(sw, wszInputFilePath, msgs);
+							
 							goto done;
 						}
+						ReportProgress(pGenerateProgress, 2, 4);
 					}
 					var hasErrors = false;
 					foreach (var m in doc.Prepare(false))
 					{
-						msgs.Add(m);
+						if(!ReportMessage(pGenerateProgress, m))
+							msgs.Add(m);
 						if (EbnfErrorLevel.Error == m.ErrorLevel)
 							hasErrors = true;
 					}
@@ -65,12 +160,12 @@ namespace Grimoire
 						WriteHeader(sw, wszInputFilePath, msgs);
 						goto done;
 					}
-
 					var name = string.Concat(Path.GetFileNameWithoutExtension(wszInputFilePath),"Parser");
 					var cfg = doc.ToCfg();
 					foreach (var m in cfg.PrepareLL1(false))
 					{
-						msgs.Add(m);
+						if (!ReportMessage(pGenerateProgress, m))
+							msgs.Add(m);
 						if (CfgErrorLevel.Error == m.ErrorLevel)
 							hasErrors = true;
 					}
@@ -79,6 +174,8 @@ namespace Grimoire
 						WriteHeader(sw, wszInputFilePath, msgs);
 						goto done;
 					}
+					ReportProgress(pGenerateProgress, 3, 4);
+
 					var lexer = doc.ToLexer(cfg);
 					WriteHeader(sw, wszInputFilePath, msgs);
 					var hasNS = !string.IsNullOrEmpty(wszDefaultNamespace);
@@ -88,9 +185,9 @@ namespace Grimoire
 					cfg.WriteCSharpTableDrivenLL1ParserClassTo(sw, name, null, lexer);
 					if (hasNS)
 						sw.WriteLine("}");
-
-					done:
-
+					ReportProgress(pGenerateProgress, 4, 4);
+				done:
+					
 					sw.Flush();
 					int length = (int)stm.Length;
 					rgbOutputFileContents[0] = Marshal.AllocCoTaskMem(length);
@@ -153,3 +250,4 @@ namespace Grimoire
 		#endregion
 	}
 }
+#pragma warning restore VSTHRD010

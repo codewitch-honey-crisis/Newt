@@ -11,8 +11,6 @@ namespace Grimoire
 #endif
 	class TableDrivenLL1Parser : LL1ParserBase
 	{
-		int _errorId;
-		int _eosId;
 		public TableDrivenLL1Parser(
 				(int Left, int[] Right)[][] parseTable,
 				(int SymbolId, bool IsNonTerminal,int NonTerminalCount) startingConfiguration,

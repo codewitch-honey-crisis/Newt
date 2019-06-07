@@ -601,6 +601,8 @@ namespace Grimoire
 				}
 			}
 			done = false;
+			const int LIMIT = 10000;
+			var il = 0;
 			while (!done)
 			{
 				done = true;
@@ -616,12 +618,18 @@ namespace Grimoire
 							{
 								foreach (var sss in col)
 									if (!kvp.Value.Contains(sss))
+									{
 										kvp.Value.Add(sss);
+										done = false;
+									}
 							}
-							done = false;
+							
 						}
 					}
 				}
+				++il;
+				if (LIMIT<il)
+					throw new CfgException("Left recursion detected in grammar - follows limit exceeded.",16);
 			}
 			return result;
 		}
