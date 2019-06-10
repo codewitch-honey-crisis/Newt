@@ -75,7 +75,7 @@
             Builds a table an LL(1) parser can use to parse input.
             </summary>
             <param name="predict">The computed prediction table, or null to compute it.</param>
-            <returns>A dictionary based parse table suitable for use by an LL(1) parser.</returns>
+            <returns>An array based parse table suitable for use by an LL(1) parser.</returns>
         </member>
         <member name="M:Grimoire.Cfg.Equals(Grimoire.Cfg)">
             <summary>

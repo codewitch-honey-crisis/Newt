@@ -17,7 +17,6 @@ namespace Grimoire
 	[CodeGeneratorRegistration(typeof(NewtLL1), "NewtLL1", "{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}", GeneratesDesignTimeSource = true)]
 	public sealed class NewtLL1 : IVsSingleFileGenerator
 	{
-
 		#region IVsSingleFileGenerator Members
 
 		public int DefaultExtension(out string pbstrDefaultExtension)
@@ -42,7 +41,6 @@ namespace Grimoire
 							return true;
 					}
 				}
-				
 			}
 			catch
 			{
@@ -68,7 +66,6 @@ namespace Grimoire
 							return true;
 					}
 				}
-				
 			}
 			catch
 			{
@@ -118,7 +115,6 @@ namespace Grimoire
 		  string wszDefaultNamespace, IntPtr[] rgbOutputFileContents,
 		  out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
 		{
-
 			try
 			{
 				using (var stm = new MemoryStream())

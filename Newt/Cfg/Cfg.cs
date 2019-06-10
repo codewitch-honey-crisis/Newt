@@ -485,8 +485,10 @@ namespace Grimoire
 				old = Clone();
 			}
 			if (IsDirectlyLeftRecursive)
-				result.Add(new CfgMessage(CfgErrorLevel.Error, 10, "Grammar is unresolvably directly left recursive and cannot be parsed with an LL parser."));
-			var fc= FillFirstFollowsConflicts();
+				result.Add(new CfgMessage(CfgErrorLevel.Error, 9, "Grammar is unresolvably and directly left recursive and cannot be parsed with an LL parser."));
+			else if (IsLeftRecursive())
+				result.Add(new CfgMessage(CfgErrorLevel.Error, 10, "Grammar is unresolvably and indirectly left recursive and cannot be parsed with an LL parser."));
+			var fc = FillFirstFollowsConflicts();
 			foreach (var f in fc)
 				result.Add(new CfgMessage(CfgErrorLevel.Error, 11, string.Concat("Grammar has an unresolvable first-follows conflict on ", f.Key)));
 			var c = FillFirstFirstConflicts();
@@ -619,8 +621,11 @@ namespace Grimoire
 								foreach (var sss in col)
 									if (!kvp.Value.Contains(sss))
 									{
-										kvp.Value.Add(sss);
-										done = false;
+										if (sss != s)
+										{
+											kvp.Value.Add(sss);
+											done = false;
+										}
 									}
 							}
 							
@@ -629,7 +634,7 @@ namespace Grimoire
 				}
 				++il;
 				if (LIMIT<il)
-					throw new CfgException("Left recursion detected in grammar - follows limit exceeded.",16);
+					throw new CfgException("Loop detected in follows computation - follows limit exceeded.",16);
 			}
 			return result;
 		}
@@ -641,6 +646,37 @@ namespace Grimoire
 						return true;
 				return false;
 			}
+		}
+		ICollection<string> _FillLeftClosure(string nonTerminal, ICollection<string> result = null)
+		{
+			if (null == result) result = new HashSet<string>();
+			if (result.Contains(nonTerminal)) return result;
+			result.Add(nonTerminal);
+			foreach(var rule in FillNonTerminalRules(nonTerminal))
+				if(!rule.IsNil)
+					_FillLeftClosure(rule.Right[0], result);
+			return result;
+		}
+		ICollection<string> _FillLeftDescendants(string nonTerminal, ICollection<string> result = null)
+		{
+			if (null == result) result = new HashSet<string>();
+			foreach (var rule in FillNonTerminalRules(nonTerminal))
+				if (!rule.IsNil)
+					_FillLeftClosure(rule.Right[0], result);
+			return result;
+		}
+		public bool IsLeftRecursive()
+		{
+			foreach (var nt in _EnumNonTerminals())
+				if (_FillLeftDescendants(nt).Contains(nt))
+					return true;
+			return false;
+		}
+		public bool IsLeftRecursive(string nonTerminal)
+		{
+			if (_FillLeftDescendants(nonTerminal).Contains(nonTerminal))
+				return true;
+			return false;
 		}
 		/// <summary>
 		/// Reports whether the specified non-terminal symbol is nillable
@@ -663,37 +699,122 @@ namespace Grimoire
 		/// Builds a table an LL(1) parser can use to parse input.
 		/// </summary>
 		/// <param name="predict">The computed prediction table, or null to compute it.</param>
-		/// <returns>A dictionary based parse table suitable for use by an LL(1) parser.</returns>
-		public IDictionary<int, IDictionary<int, (int Left, int[] Right)>> ToLL1ParseTable(IDictionary<CfgRule, ICollection<string>> predict = null)
+		/// <returns>An array based parse table suitable for use by an LL(1) parser.</returns>
+		public (int Left, int[] Right)[][] ToLL1ParseTable(IDictionary<CfgRule, ICollection<string>> predict = null)
 		{
-			var result = new Dictionary<int, IDictionary<int, (int Left, int[] Right)>>();
+			var nts = new List<string>(_EnumNonTerminals());
+			var ts = new List<string>(_EnumTerminals());
+			ts.Remove("#ERROR");
+			var result = new (int Left, int[] Right)[nts.Count][];
 			if (null == predict) predict = FillPredict();
-			foreach (var nt in _EnumNonTerminals())
+			foreach (var nt in nts)
 			{
-				var d = new Dictionary<int, (int Left, int[] Right)>();
+				var arr = new (int Left, int[] Right)[ts.Count];
+				for (var i = 0; i < arr.Length; i++)
+					arr[i] = (-1, null);
 				foreach (var pre in predict)
 				{
 					if (Equals(nt, pre.Key.Left))
 					{
 						foreach (var s in pre.Value)
 						{
-							var right = new int[pre.Key.Right.Count];
-							for (var i = 0; i < right.Length; i++)
-								right[i] = GetSymbolId(pre.Key.Right[i]);
-							(int Left, int[] Right) ir = (GetSymbolId(pre.Key.Left), right);
-							var sid = GetSymbolId(s);
-							(int Left, int[] Right) ir2;
-							if (d.TryGetValue(sid,out ir2))
+							if (null != s)
 							{
-								throw new Exception(string.Format("Conflict between {0} and {1}", _ToStringIntRule(ir2), _ToStringIntRule(ir)));
-							} else
-								d.Add(GetSymbolId(s), ir);
+								var right = new int[pre.Key.Right.Count];
+								for (var i = 0; i < right.Length; i++)
+									right[i] = GetSymbolId(pre.Key.Right[i]);
+								(int Left, int[] Right) ir = (GetSymbolId(pre.Key.Left), right);
+								var sid = GetSymbolId(s);
+								arr[sid - nts.Count] = (-1, null);
+								(int Left, int[] Right) ir2;
+								if (null != (ir2 = arr[sid - nts.Count]).Right)
+									throw new Exception(string.Format("Conflict between {0} and {1}", _ToStringIntRule(ir2), _ToStringIntRule(ir)));
+								else
+									arr[sid - nts.Count] = ir;
+							}
+
+							
 						}
 					}
 				}
-				result.Add(GetSymbolId(nt), d);
+				result[GetSymbolId(nt)] = arr;
 			}
 			return result;
+		}
+		public TableDrivenLL1Parser ToLL1Parser(FA lexer,ParseContext parseContext = null)
+		{
+			var parseTable = ToLL1ParseTable();
+			var startSymbol = StartSymbol;
+			(int SymbolId, bool IsNonTerminal, int NonTerminalCount) startingConfiguration =
+				(GetSymbolId(startSymbol), IsNonTerminal(startSymbol), _EnumNonTerminals().Count());
+			var lexTable = lexer.ToDfaTable2<int>();
+			var symbols = _EnumSymbols().ToArray();
+			var substitutionsAndHiddenTerminals = new int[symbols.Length];
+			for(var i = 0;i<substitutionsAndHiddenTerminals.Length;i++)
+			{
+				substitutionsAndHiddenTerminals[i] = GetSymbolId(symbols[i]);
+				var d= AttributeSets.TryGetValue(symbols[i], null);
+				if(null!=d)
+				{
+					object o;
+					if (!IsNonTerminal(symbols[i]) && d.TryGetValue("hidden", out o) && o is bool && (bool)o)
+						substitutionsAndHiddenTerminals[i] = -3;
+					else
+					{
+						var s = d.TryGetValue("substitute", null) as string;
+						if (null != s)
+							substitutionsAndHiddenTerminals[i] = GetSymbolId(s);
+					}
+				}
+			}
+			var blockEnds = new string[symbols.Length];
+			for(var i = 0;i<blockEnds.Length;i++)
+			{
+				blockEnds[i] = null;
+				var d = AttributeSets.TryGetValue(symbols[i], null);
+				if(null!=d)
+				{
+					blockEnds[i]= d.TryGetValue("blockEnd", null) as string;
+				}
+			}
+			var collapsedNonTerminals = new int[symbols.Length];
+			for (var i = 0; i < collapsedNonTerminals.Length; i++)
+			{
+				collapsedNonTerminals[i] = -1;
+				var d = AttributeSets.TryGetValue(symbols[i], null);
+				if (null != d)
+				{
+					object o;
+					if (d.TryGetValue("collapse", out o) && o is bool && (bool)o)
+						collapsedNonTerminals[i] = -3;
+				}
+			}
+			var terminalTypes = new Type[symbols.Length];
+			for (var i = 0; i < terminalTypes.Length; i++)
+			{
+				terminalTypes[i] = null;
+				var d = AttributeSets.TryGetValue(symbols[i], null);
+				if (null != d)
+				{
+					var s = d.TryGetValue("type", null) as string;
+					if (null != s)
+					{
+						terminalTypes[i] = ParserUtility.ResolveType(s);
+					}
+				}
+			}
+			return new TableDrivenLL1Parser(
+				parseTable,
+				startingConfiguration,
+				lexTable,
+				symbols,
+				substitutionsAndHiddenTerminals,
+				blockEnds,
+				collapsedNonTerminals,
+				terminalTypes,
+				parseContext
+
+				);
 		}
 		string _ToStringIntRule((int Left, int[] Right) rule)
 		{
@@ -719,7 +840,7 @@ namespace Grimoire
 				return string.Concat("\"", field.Replace("\"", "\"\""), "\"");
 			return field;
 		}
-		public string ToLL1Csv(IDictionary<int, IDictionary<int, (int Left, int[] Right)>> parseTable=null)
+		public string ToLL1Csv((int Left, int[] Right)[][] parseTable=null)
 		{
 			if (null == parseTable)
 				parseTable = ToLL1ParseTable();
@@ -744,7 +865,7 @@ namespace Grimoire
 						sb.Append(",");
 						IDictionary<int, (int Left, int[] Right)> d;
 						(int Left, int[] Right) ir;
-						if (parseTable.TryGetValue(GetSymbolId(nt), out d) && d.TryGetValue(GetSymbolId(t), out ir))
+						if (null!=(ir=parseTable[GetSymbolId(nt)][GetSymbolId(t)]).Right)
 						{
 							sb.Append(_MakeSafeCsv(GetSymbolById(ir.Left)));
 							sb.Append(" ->");

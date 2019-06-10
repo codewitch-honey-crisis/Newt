@@ -42,9 +42,7 @@
     <Compile Include="..\Newt\Ebnf\EbnfUnaryExpression.cs" Link="Ebnf\EbnfUnaryExpression.cs" />
     <Compile Include="..\Newt\FA\FA.cs" Link="FA\FA.cs" />
     <Compile Include="..\Newt\FA\FA2.cs" Link="FA\FA2.cs" />
-    <Compile Include="..\Newt\RuntimeLL1Parser.cs" Link="RuntimeLL1Parser.cs" />
     <Compile Include="..\Newt\Runtimes\ISymbolResolver.cs" Link="Runtimes\ISymbolResolver.cs" />
-    <Compile Include="..\Newt\Runtimes\LL1ParserBase.cs" Link="Runtimes\LL1ParserBase.cs" />
     <Compile Include="..\Newt\Runtimes\LLParser.cs" Link="Runtimes\LLParser.cs" />
     <Compile Include="..\Newt\Runtimes\ParseContext.cs" Link="Runtimes\ParseContext.cs" />
     <Compile Include="..\Newt\Runtimes\ParseNode.cs" Link="Runtimes\ParseNode.cs" />

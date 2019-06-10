@@ -17,7 +17,7 @@ namespace Perf
 			string filestring;
 			using (var sr = File.OpenText(file))
 				filestring = sr.ReadToEnd();
-			LLParser parser = new RuntimeLL1Parser(cfg, lexer);
+			LLParser parser =cfg.ToLL1Parser(lexer);
 			parser.Restart(ParseContext.Create(filestring));
 			Console.WriteLine(parser.ParseSubtree());
 			var sw = new Stopwatch();
@@ -39,7 +39,7 @@ namespace Perf
 				while (parser.Read()) ;
 			}
 			sw.Stop();
-			Console.WriteLine("Table Driven Parser: {0}",sw.Elapsed / 100);
+			Console.WriteLine("Generated Parser: {0}",sw.Elapsed / 100);
 
 
 		}

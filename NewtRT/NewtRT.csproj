@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <Compile Include="..\Newt\Runtimes\ISymbolResolver.cs" Link="ISymbolResolver.cs" />
-    <Compile Include="..\Newt\Runtimes\LL1ParserBase.cs" Link="LL1ParserBase.cs" />
     <Compile Include="..\Newt\Runtimes\LLParser.cs" Link="LLParser.cs" />
     <Compile Include="..\Newt\Runtimes\ParseContext.cs" Link="ParseContext.cs" />
     <Compile Include="..\Newt\Runtimes\ParseNode.cs" Link="ParseNode.cs" />

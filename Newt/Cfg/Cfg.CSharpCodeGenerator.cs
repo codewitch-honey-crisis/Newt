@@ -71,7 +71,7 @@ namespace Grimoire
 			}
 
 		}
-		public void WriteCSharpLL1ParseTableCreateExpressionTo(TextWriter writer, IDictionary<int, IDictionary<int, (int Left, int[] Right)>> parseTable = null)
+		public void WriteCSharpLL1ParseTableCreateExpressionTo(TextWriter writer, (int Left, int[] Right)[][] parseTable = null)
 		{
 			if (null == parseTable)
 				parseTable = ToLL1ParseTable();
@@ -82,39 +82,34 @@ namespace Grimoire
 			{
 				writer.Write("\t");
 				if (0 != i) writer.Write(",");
-				IDictionary<int, (int Left, int[] Right)> d;
-				if (parseTable.TryGetValue(i, out d))
+				var d = parseTable[i];
+				writer.WriteLine("new (int Left, int[] Right)[] {");
+				var j = 0;
+				foreach (var t in _EnumTerminals())
 				{
-					writer.WriteLine("new (int Left, int[] Right)[] {");
-					var j = 0;
-					foreach (var t in _EnumTerminals())
+					if (Equals(t, "#ERROR"))
+						continue;
+					writer.Write("\t\t");
+					if (0 != j) writer.Write(",");
+					(int Left, int[] Right) ir;
+					if (null!=(ir=d[j]).Right)
 					{
-						if (Equals(t, "#ERROR"))
-							continue;
-						writer.Write("\t\t");
-						if (0 != j) writer.Write(",");
-						(int Left, int[] Right) ir;
-						if (d.TryGetValue(j + ntc, out ir))
-						{
-							writer.Write("(");
-							CS.WriteCSharpLiteralTo(writer, ir.Left);
-							writer.Write(", ");
-							CS.WriteCSharpLiteralTo(writer, ir.Right);
-							writer.WriteLine(")");
-						}
-						else
-							writer.WriteLine("(-1,null)");
-						++j;
+						writer.Write("(");
+						CS.WriteCSharpLiteralTo(writer, ir.Left);
+						writer.Write(", ");
+						CS.WriteCSharpLiteralTo(writer, ir.Right);
+						writer.WriteLine(")");
 					}
-					writer.WriteLine("\t\t}");
+					else
+						writer.WriteLine("(-1,null)");
+					++j;
 				}
-				else
-					writer.WriteLine("null");
+				writer.WriteLine("\t\t}");
 				
 			}
 			writer.Write("}");
 		}
-		public void WriteCSharpTableDrivenLL1ParserClassTo(TextWriter writer, string name, string modifiers = null, FA lexer = null, IDictionary<int, IDictionary<int, (int Left, int[] Right)>> parseTable = null)
+		public void WriteCSharpTableDrivenLL1ParserClassTo(TextWriter writer, string name, string modifiers = null, FA lexer = null, (int Left, int[] Right)[][] parseTable = null)
 		{
 			if (string.IsNullOrEmpty(name))
 				name = "Parser";

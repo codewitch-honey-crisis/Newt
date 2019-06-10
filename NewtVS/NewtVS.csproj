@@ -59,6 +59,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Attributes.cs" />
+    <Compile Include="EbnfClassifier.cs" />
+    <Compile Include="EbnfClassifierClassificationDefinition.cs" />
+    <Compile Include="EbnfClassifierFormat.cs" />
+    <Compile Include="EbnfClassifierProvider.cs" />
     <Compile Include="NewtLL1.cs" />
     <Compile Include="NewtVS.cs" />
     <Compile Include="GeneralSettings.Designer.cs">

@@ -47,27 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Newt\Runtimes\ISymbolResolver.cs">
-      <Link>NewtRT\ISymbolResolver.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\LL1ParserBase.cs">
-      <Link>NewtRT\LL1ParserBase.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\LLParser.cs">
-      <Link>NewtRT\LLParser.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParseContext.cs">
-      <Link>NewtRT\ParseContext.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParseNode.cs">
-      <Link>NewtRT\ParseNode.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\ParserUtility.cs">
-      <Link>NewtRT\ParserUtility.cs</Link>
-    </Compile>
-    <Compile Include="..\Newt\Runtimes\TableDrivenLL1Parser.cs">
-      <Link>NewtRT\TableDrivenLL1Parser.cs</Link>
-    </Compile>
     <Compile Include="EbnfParser.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -104,6 +83,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NewtRT\NewtRT.csproj">
+      <Project>{bec90e0f-a648-4937-b0a8-76e7264f6cf9}</Project>
+      <Name>NewtRT</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
