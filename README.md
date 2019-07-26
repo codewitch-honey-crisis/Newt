@@ -1,5 +1,7 @@
 # Newt
-Newt Parser Generator for C#
+Newt Parser Generator for C# (Retired)
+
+please see LL https://github.com/codewitch-honey-crisis/LL for a better replacement
 
 Newt generates C# classes to parse streams of input using grammars based on an EBNF variant.
 
