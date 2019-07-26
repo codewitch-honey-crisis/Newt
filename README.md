@@ -1,4 +1,4 @@
-# Newt
+# Newt (Deprecated)
 Newt Parser Generator for C# (Retired)
 
 please see LL https://github.com/codewitch-honey-crisis/LL for a better replacement
